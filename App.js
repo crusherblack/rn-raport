@@ -10,7 +10,6 @@ import {
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
 
 import MainNavigator from './src/navigators/main';
 import LoginNavigator from './src/navigators/login';
@@ -18,10 +17,7 @@ import LoginNavigator from './src/navigators/login';
 const RootStack = createStackNavigator();
 
 const App = () => {
-  const auth = useSelector((state) => state.auth);
-
-  /* const isAuthenticated = false; */
-  const {isAuthenticated, loading} = auth;
+  const isAuthenticated = false;
 
   return (
     <>

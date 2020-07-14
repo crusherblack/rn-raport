@@ -1,6 +1,6 @@
 import {ApolloClient, ApolloLink, HttpLink, InMemoryCache} from 'apollo-boost';
 
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {GRAPHQL_URL} from './config';
 import {WebSocketLink} from 'apollo-link-ws';
 import {getMainDefinition} from 'apollo-utilities';
@@ -24,7 +24,7 @@ const authLink = setContext(async (_, {headers}) => {
   return {
     headers: {
       ...headers,
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   };
 });
