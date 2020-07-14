@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import MainNavigator from './src/navigators/main';
 import LoginNavigator from './src/navigators/login';
@@ -17,7 +18,24 @@ import LoginNavigator from './src/navigators/login';
 const RootStack = createStackNavigator();
 
 const App = () => {
-  const isAuthenticated = false;
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    getToken();
+  }, [getToken]);
+
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -27,7 +45,7 @@ const App = () => {
             headerShown: false,
             animationEnabled: false,
           }}>
-          {isAuthenticated ? (
+          {isLogin ? (
             <RootStack.Screen name={'MainStack'} component={MainNavigator} />
           ) : (
             <RootStack.Screen name={'LoginStack'} component={LoginNavigator} />
