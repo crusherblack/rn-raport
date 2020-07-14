@@ -19,6 +19,8 @@ const RootStack = createStackNavigator();
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
+
+  /* const isAuthenticated = false; */
   const {isAuthenticated, loading} = auth;
 
   return (
