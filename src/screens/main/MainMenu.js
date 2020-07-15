@@ -8,6 +8,8 @@ import Card from '../../components/Card/Card';
 import Menu1 from '../../img/menu1.jpg';
 import Menu2 from '../../img/menu2.jpg';
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const SET_AUTH_LOGOUT = gql`
   mutation {
     setAuthLogout @client
@@ -25,7 +27,7 @@ const GET_USER_DETAIL = gql`
   }
 `;
 
-const MainMenu = (props) => {
+const MainMenu = ({navigation}) => {
   const [storage, setStorage] = useState();
 
   useEffect(() => {
@@ -44,9 +46,9 @@ const MainMenu = (props) => {
 
   let content;
   if (loading) {
-    content = <Text style={{color: 'black'}}>Loading...</Text>;
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
   } else if (error) {
-    content = <Text style={{color: 'black'}}>{error.message}</Text>;
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
   } else {
     content = (
       <>
@@ -56,7 +58,7 @@ const MainMenu = (props) => {
             color: 'white',
             fontWeight: 'bold',
           }}>
-          RAPORT APP
+          RAPORT APP <Icon name="ballot" color="#fff" size={30} />
         </Text>
         <Text style={styles.textColor}>
           {usersDetail.user.firstName} {usersDetail.user.lastName}
@@ -82,8 +84,18 @@ const MainMenu = (props) => {
       <View style={{flex: 1, backgroundColor: '#151515'}}>
         <View style={styles.containerTop}>{content}</View>
         <View style={styles.containerMiddle}>
-          <Card image={Menu1} title="Quiz" />
-          <Card image={Menu2} title="Raport" />
+          <Card
+            image={Menu1}
+            title="Quiz"
+            navigation={navigation}
+            to="QuizListStack"
+          />
+          <Card
+            image={Menu2}
+            title="Raport"
+            navigation={navigation}
+            to="RaportListStack"
+          />
           {/* <TouchableOpacity
           style={styles.containerBtn}
           onPress={() => handleLogout()}>

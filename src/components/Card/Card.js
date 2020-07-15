@@ -2,9 +2,10 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {View, Text, Image} from 'react-native';
 
-const Card = ({image, title}) => {
+const Card = ({image, title, navigation, to}) => {
   return (
     <TouchableOpacity
+      onPress={() => navigation.push(to)}
       style={{
         height: '40%',
         width: '100%',
