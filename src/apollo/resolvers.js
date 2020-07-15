@@ -7,6 +7,7 @@ const resolvers = {
         data: {
           isLogin: true,
           userInfo: {
+            __typename: 'User Detail',
             id,
             fullName,
             email,

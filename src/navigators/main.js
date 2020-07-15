@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MainMenu from '../screens/main/MainMenu';
 import QuizList from '../screens/main/QuizList';
 import RaportList from '../screens/main/RaportList';
+import QuizDetail from '../screens/main/QuizDetail';
 
 const MainStack = createStackNavigator();
 
@@ -25,6 +26,9 @@ const AuthStackNavigator = () => {
       <MainStack.Screen
         name={'RaportListStack'}
         component={RaportList}></MainStack.Screen>
+      <MainStack.Screen
+        name={'QuizDetailStack'}
+        component={QuizDetail}></MainStack.Screen>
     </MainStack.Navigator>
   );
 };
