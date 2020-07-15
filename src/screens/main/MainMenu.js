@@ -55,10 +55,10 @@ const MainMenu = ({navigation}) => {
         <Text
           style={{
             fontSize: 30,
-            color: 'white',
+            color: '#FF793F',
             fontWeight: 'bold',
           }}>
-          RAPORT APP <Icon name="ballot" color="#fff" size={30} />
+          RAPORT APP <Icon name="ballot" color="#FF793F" size={30} />
         </Text>
         <Text style={styles.textColor}>
           {usersDetail.user.firstName} {usersDetail.user.lastName}
@@ -81,7 +81,7 @@ const MainMenu = ({navigation}) => {
 
   return (
     <>
-      <View style={{flex: 1, backgroundColor: '#151515'}}>
+      <View style={{flex: 1, backgroundColor: 'black'}}>
         <View style={styles.containerTop}>{content}</View>
         <View style={styles.containerMiddle}>
           <Card
