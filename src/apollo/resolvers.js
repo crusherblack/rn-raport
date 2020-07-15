@@ -13,9 +13,9 @@ const resolvers = {
           },
         },
       });
-
       return null;
     },
+
     setAuthLogout: (_, args, {cache}) => {
       cache.writeData({data: {isLogin: false}});
       return null;

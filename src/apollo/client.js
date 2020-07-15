@@ -23,6 +23,8 @@ const cache = new InMemoryCache();
 
 const authLink = setContext(async (_, {headers}) => {
   const token = await AsyncStorage.getItem('token');
+
+  console.log(token);
   return {
     headers: {
       ...headers,

@@ -65,7 +65,11 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       login();
-      await AsyncStorage.setItem('token', data.login.token);
+      const dataStorage = {
+        token: data.login.token,
+        userId: data.login.user.id,
+      };
+      await AsyncStorage.setItem('token', JSON.stringify(dataStorage));
       setToken(data.login.token);
       setLoginTrue({
         variables: {
@@ -74,7 +78,10 @@ const Login = () => {
           email: data.login.user.email,
         },
       });
-      console.log(data.login.user);
+
+      const infoStorage = await AsyncStorage.getItem('token');
+      let responseObject = JSON.parse(infoStorage);
+      console.log(responseObject);
     } catch (e) {
       // saving error
     }
