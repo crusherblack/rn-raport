@@ -8,6 +8,8 @@ import {onError} from 'apollo-link-error';
 import {setContext} from 'apollo-link-context';
 import {split} from 'apollo-link';
 
+import resolvers from './resolvers';
+
 const httpLink = new HttpLink({
   uri: `${GRAPHQL_URL}`,
 });
@@ -56,7 +58,19 @@ const link = split(
   httpAuthLink,
 );
 
-export default new ApolloClient({
+const client = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache,
+  resolvers,
+  connectToDevTools: true,
 });
+
+client.cache.writeData({
+  data: {
+    isModalOpen: false,
+    userInfo: null,
+    isLogin: false,
+  },
+});
+
+export default client;

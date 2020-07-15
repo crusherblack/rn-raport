@@ -11,34 +11,36 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import {gql} from 'apollo-boost';
 
 import MainNavigator from './src/navigators/main';
 import LoginNavigator from './src/navigators/login';
 
+import {useMutation, useQuery} from '@apollo/react-hooks';
+
 const RootStack = createStackNavigator();
 
+const GET_ISLOGIN = gql`
+  query {
+    isLogin @client
+  }
+`;
+
 const App = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const {
+    loading,
+    error,
+    data: {isLogin},
+  } = useQuery(GET_ISLOGIN);
+  console.log(isLogin);
 
-  useEffect(() => {
-    getToken();
-  }, [getToken]);
-
-  const getToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      if (token) {
-        setIsLogin(true);
-      } else {
-        setIsLogin(false);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  return (
-    <>
+  let content;
+  if (loading) {
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
+  } else if (error) {
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
+  } else {
+    content = (
       <NavigationContainer>
         <RootStack.Navigator
           screenOptions={{
@@ -52,8 +54,10 @@ const App = () => {
           )}
         </RootStack.Navigator>
       </NavigationContainer>
-    </>
-  );
+    );
+  }
+
+  return <>{content}</>;
 };
 
 const styles = StyleSheet.create({

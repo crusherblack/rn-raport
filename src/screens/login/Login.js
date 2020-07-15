@@ -11,20 +11,32 @@ import {gql} from 'apollo-boost';
 
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
+import OpenModelButton from '../../components/OpenModalButton';
+import Modal from '../../components/Modal';
 
-export const HANDLE_LOGIN = gql`
+const HANDLE_LOGIN = gql`
   mutation {
     login(input: {email: "fadhildarma13@gmail.com", password: "kelas2tkj"}) {
       user {
         id
         email
+        firstName
+        lastName
       }
       token
     }
   }
 `;
 
-export const GET_USER = gql`
+const SET_AUTH_LOGIN = gql`
+  mutation setAuthLogin($id: String!, $fullName: String!, $email: String!) {
+    setAuthLogin(id: $id, fullName: $fullName, email: $email) @client
+  }
+`;
+
+/* const SET_USER_DATA = gql``;
+ */
+const GET_USER = gql`
   query users {
     users {
       id
@@ -38,6 +50,7 @@ const Login = () => {
   const [token, setToken] = useState('');
 
   const [login, {data}] = useMutation(HANDLE_LOGIN);
+  const [setLoginTrue, {data: setLoginData}] = useMutation(SET_AUTH_LOGIN);
 
   useEffect(() => {
     getToken();
@@ -54,6 +67,14 @@ const Login = () => {
       login();
       await AsyncStorage.setItem('token', data.login.token);
       setToken(data.login.token);
+      setLoginTrue({
+        variables: {
+          id: data.login.user.id,
+          fullName: data.login.user.firstName + ' ' + data.login.user.lastName,
+          email: data.login.user.email,
+        },
+      });
+      console.log(data.login.user);
     } catch (e) {
       // saving error
     }
@@ -90,6 +111,8 @@ const Login = () => {
       <Text style={{color: 'white'}}>List User</Text>
       {content}
       <Text style={{color: 'white'}}>{token}</Text>
+      <OpenModelButton />
+      <Modal />
     </View>
   );
 };

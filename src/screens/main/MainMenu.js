@@ -1,17 +1,26 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {gql} from 'apollo-boost';
+import {useMutation} from 'react-apollo';
 import AsyncStorage from '@react-native-community/async-storage';
 
+const SET_AUTH_LOGOUT = gql`
+  mutation {
+    setAuthLogout @client
+  }
+`;
+
 const MainMenu = (props) => {
+  const [setLoginFalse, {data}] = useMutation(SET_AUTH_LOGOUT);
+
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
+      setLoginFalse();
     } catch (err) {
       console.log(err);
     }
   };
-
-  console.log(props.screenProps);
 
   return (
     <View>
@@ -19,7 +28,7 @@ const MainMenu = (props) => {
       <TouchableOpacity
         style={styles.containerBtn}
         onPress={() => handleLogout()}>
-        <Text style={styles.textBtn}>Main Menu</Text>
+        <Text style={styles.textBtn}>Log Out</Text>
       </TouchableOpacity>
     </View>
   );
