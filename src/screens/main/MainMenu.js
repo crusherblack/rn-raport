@@ -3,6 +3,10 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {gql} from 'apollo-boost';
 import {useMutation, useQuery} from 'react-apollo';
 import AsyncStorage from '@react-native-community/async-storage';
+import Card from '../../components/Card/Card';
+
+import Menu1 from '../../img/menu1.jpg';
+import Menu2 from '../../img/menu2.jpg';
 
 const SET_AUTH_LOGOUT = gql`
   mutation {
@@ -45,9 +49,20 @@ const MainMenu = (props) => {
     content = <Text style={{color: 'black'}}>{error.message}</Text>;
   } else {
     content = (
-      <Text style={{color: 'black'}}>
-        {usersDetail.user.firstName} - {usersDetail.user.email}
-      </Text>
+      <>
+        <Text
+          style={{
+            fontSize: 30,
+            color: 'white',
+            fontWeight: 'bold',
+          }}>
+          RAPORT APP
+        </Text>
+        <Text style={styles.textColor}>
+          {usersDetail.user.firstName} {usersDetail.user.lastName}
+        </Text>
+        <Text style={styles.textColor}>{usersDetail.user.email}</Text>
+      </>
     );
   }
 
@@ -63,19 +78,47 @@ const MainMenu = (props) => {
   };
 
   return (
-    <View>
-      <Text>Main Menu </Text>
-      {content}
-      <TouchableOpacity
-        style={styles.containerBtn}
-        onPress={() => handleLogout()}>
-        <Text style={styles.textBtn}>Log Out</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={{flex: 1, backgroundColor: '#151515'}}>
+        <View style={styles.containerTop}>{content}</View>
+        <View style={styles.containerMiddle}>
+          <Card image={Menu1} title="Quiz" />
+          <Card image={Menu2} title="Raport" />
+          {/* <TouchableOpacity
+          style={styles.containerBtn}
+          onPress={() => handleLogout()}>
+          <Text style={styles.textBtn}>Log Out</Text>
+        </TouchableOpacity> */}
+        </View>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  containerTop: {
+    flex: 1,
+    color: 'white',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerMiddle: {
+    backgroundColor: '#e1e1e1',
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+    flex: 7,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  textColor: {
+    color: 'white',
+    fontSize: 15,
+  },
   containerBtn: {
     width: '100%',
     alignItems: 'center',
