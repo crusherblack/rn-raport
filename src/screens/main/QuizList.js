@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 
-import {ListItem, SearchBar} from 'react-native-elements';
+import {ListItem, SearchBar, Header} from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -16,31 +16,28 @@ const QuizList = ({navigation}) => {
 
   return (
     <SafeAreaView style={{color: 'white'}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 10,
+      <Header
+        placement="left"
+        leftComponent={
+          <Icon
+            name="chevron-left"
+            size={30}
+            onPress={() => navigation.goBack()}
+          />
+        }
+        placement="center"
+        centerComponent={{
+          text: 'Quiz',
+          style: {
+            fontSize: 18,
+            fontWeight: 'bold',
+          },
+        }}
+        containerStyle={{
           backgroundColor: 'white',
-        }}>
-        <Icon
-          name="chevron-left"
-          size={30}
-          onPress={() => navigation.goBack()}
-        />
-        <Text
-          style={{
-            fontSize: 23,
-          }}>
-          Quiz
-        </Text>
-        <Text
-          style={{
-            color: 'white',
-          }}>
-          {'    a '}
-        </Text>
-      </View>
+        }}
+      />
+
       <SearchBar
         lightTheme
         inputStyle={{

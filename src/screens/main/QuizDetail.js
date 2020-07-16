@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {ListItem} from 'react-native-elements';
+import {ListItem, Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {list2} from './list';
@@ -20,19 +20,20 @@ const QuizDetail = ({navigation, route}) => {
         flex: 1,
         backgroundColor: 'white',
       }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          padding: 10,
+      <Header
+        placement="left"
+        leftComponent={
+          <Icon
+            name="chevron-left"
+            size={30}
+            onPress={() => navigation.goBack()}
+          />
+        }
+        placement="center"
+        containerStyle={{
           backgroundColor: 'white',
-        }}>
-        <Icon
-          name="chevron-left"
-          size={30}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
+        }}
+      />
       <View
         style={{
           padding: 16,
@@ -93,6 +94,7 @@ const QuizDetail = ({navigation, route}) => {
               style={{
                 fontWeight: 'bold',
               }}>
+              {' '}
               April 28, 2020 - 11.30 WIB
             </Text>
           </Text>
@@ -105,6 +107,7 @@ const QuizDetail = ({navigation, route}) => {
               style={{
                 fontWeight: 'bold',
               }}>
+              {' '}
               XI IPS 3 SMA
             </Text>
           </Text>
