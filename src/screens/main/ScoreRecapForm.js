@@ -14,9 +14,7 @@ import {Header, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MultiButton from '../../components/RadioButton/RadioButton';
-import SimpleList from '../../components/List/SimpleList';
-
-import RBSheet from 'react-native-raw-bottom-sheet';
+import ThematicModal from '../../components/Form/Thematic';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -109,7 +107,7 @@ const scoreClassification = [
 ];
 
 const ScoreRecapForm = ({navigation}) => {
-  const refRBSheet = useRef();
+  const thematicModal = useRef();
   return (
     <SafeAreaView
       style={{
@@ -155,7 +153,8 @@ const ScoreRecapForm = ({navigation}) => {
           <Formik
             initialValues={{
               thematic: '',
-
+              subject: '',
+              basicCompetencies: '',
               educational: '',
               class: '',
               semester: '',
@@ -163,8 +162,8 @@ const ScoreRecapForm = ({navigation}) => {
             }}
             /*    validationSchema={FormSchema} */
             onSubmit={(values, actions) => {
-              console.log(values);
-              //actions.resetForm();
+              console.table(values);
+              actions.resetForm();
             }}>
             {({
               handleSubmit,
@@ -199,7 +198,14 @@ const ScoreRecapForm = ({navigation}) => {
                 />
 
                 <Text style={styles.title}>Thematic</Text>
-                <TextInput style={styles.input} />
+
+                <TouchableOpacity onPress={() => thematicModal.current.open()}>
+                  <TextInput
+                    style={styles.input}
+                    value={values.thematic}
+                    editable={false}
+                  />
+                </TouchableOpacity>
 
                 <Text style={styles.title}>Score Classification</Text>
                 <MultiButton
@@ -210,57 +216,18 @@ const ScoreRecapForm = ({navigation}) => {
                 />
 
                 <Text style={styles.title}>Subject</Text>
-                <TextInput
-                  style={styles.input}
-                  value={values.thematic}
-                  onChangeText={handleChange('thematic')}
-                  onBlur={handleBlur('thematic')}
-                />
+                <TextInput style={styles.input} />
 
                 <Text style={styles.title}>Basic Competencies</Text>
                 <TextInput style={styles.input} />
 
-                <Button
-                  title="OPEN BOTTOM SHEET"
-                  onPress={() => refRBSheet.current.open()}
+                <ThematicModal
+                  thematicModal={thematicModal}
+                  name="thematic"
+                  setFieldValue={setFieldValue}
+                  value={values.thematic}
                 />
 
-                <RBSheet
-                  ref={refRBSheet}
-                  closeOnDragDown={true}
-                  closeOnPressMask={true}
-                  customStyles={{
-                    wrapper: {
-                      backgroundColor: 'transparent',
-                    },
-                    draggableIcon: {
-                      backgroundColor: '#FF793F',
-                    },
-                  }}
-                  height={550}>
-                  <ScrollView
-                    style={{
-                      padding: 16,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                        marginBottom: 10,
-                      }}>
-                      Select Thematic
-                    </Text>
-                    <SimpleList title="Indahnya Kebersamaan" />
-                    <SimpleList title="Selalu Berhemat Energi" />
-                    <SimpleList title="Peduli Terhadap Makhluk Hidup" />
-                    <SimpleList title="Berbagi Pekerjaan" />
-                    <SimpleList title="Pahlawanku" />
-                    <SimpleList title="Indahnya Negeriku" />
-                    <SimpleList title="Cita - citaku" />
-                    <SimpleList title="Tempat Tinggalku" />
-                    <SimpleList title="Makananku Sehat dan Bergizi" />
-                  </ScrollView>
-                </RBSheet>
                 <Button title="Submit" onPress={handleSubmit} />
               </View>
             )}

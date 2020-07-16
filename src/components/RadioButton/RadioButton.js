@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 
 import {useFormikContext, Formik, Form, Field} from 'formik';
 
-const RadioButton = ({options, setFieldValue, name}) => {
-  const [value, setValue] = useState(null);
+const RadioButton = ({options, setFieldValue, name, value}) => {
+  const [valueButton, setValueButton] = useState(null);
+
+  useEffect(() => {
+    setValueButton(value);
+  }, [value]);
 
   return (
     <View style={{flexDirection: 'row'}}>
@@ -14,7 +18,6 @@ const RadioButton = ({options, setFieldValue, name}) => {
             <TouchableOpacity
               style={value === item.key ? styles.buttonChecked : styles.button}
               onPress={() => {
-                setValue(item.key);
                 setFieldValue(name, item.key);
               }}>
               <Text
