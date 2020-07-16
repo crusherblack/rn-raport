@@ -49,11 +49,14 @@ const GET_USER = gql`
 const Login = () => {
   const [token, setToken] = useState('');
 
-  const [hitLogin, {loading: load, error: errr}] = useMutation(HANDLE_LOGIN, {
-    onCompleted({login}) {
-      setStorageToken(login);
+  const [hitLogin, {loading: loginLoading, error: loginError}] = useMutation(
+    HANDLE_LOGIN,
+    {
+      onCompleted({login}) {
+        setStorageToken(login);
+      },
     },
-  });
+  );
 
   const [setLoginTrue, {data: setLoginData}] = useMutation(SET_AUTH_LOGIN);
 
@@ -119,7 +122,9 @@ const Login = () => {
       <TouchableOpacity
         style={styles.containerBtnLogin}
         onPress={() => hitLogin()}>
-        <Text style={styles.textBtnLogin}>Login</Text>
+        <Text style={styles.textBtnLogin}>
+          {loginLoading ? 'Login...' : 'Login'}
+        </Text>
       </TouchableOpacity>
       <Text style={{color: 'white'}}>List User</Text>
       {content}

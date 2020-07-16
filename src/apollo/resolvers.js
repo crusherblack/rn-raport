@@ -17,6 +17,11 @@ const resolvers = {
       return null;
     },
 
+    setIsLogin: (_, args, {cache}) => {
+      cache.writeData({data: {isLogin: false}});
+      return null;
+    },
+
     setAuthLogout: (_, args, {cache}) => {
       cache.writeData({data: {isLogin: false}});
       return null;

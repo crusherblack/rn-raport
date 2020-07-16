@@ -16,7 +16,7 @@ import {gql} from 'apollo-boost';
 import MainNavigator from './src/navigators/main';
 import LoginNavigator from './src/navigators/login';
 
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery, useLazyQuery} from '@apollo/react-hooks';
 
 const RootStack = createStackNavigator();
 
@@ -26,13 +26,51 @@ const GET_ISLOGIN = gql`
   }
 `;
 
+const SET_ISLOGIN = gql`
+  mutation {
+    setIsLogin @client
+  }
+`;
+
+const SET_LOGOUT = gql`
+  mutation {
+    setAuthLogout @client
+  }
+`;
+
 const App = () => {
-  const {
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  const [setLoginTrue, {data: dataLogin}] = useMutation(SET_ISLOGIN);
+  const [setLogout, {data: dataLogout}] = useMutation(SET_LOGOUT);
+
+  /* const {
     loading,
     error,
     data: {isLogin},
-  } = useQuery(GET_ISLOGIN);
-  console.log(isLogin);
+  } = useQuery(GET_ISLOGIN); */
+
+  const [getIsLogin, {loading, error, data: isLogin}] = useLazyQuery(
+    GET_ISLOGIN,
+  );
+
+  const getToken = async () => {
+    const infoStorage = await AsyncStorage.getItem('token');
+    let responseObject = JSON.parse(infoStorage);
+    const token = responseObject && responseObject.token;
+
+    if (token) {
+      setLoginTrue();
+    } else {
+      setLogout();
+    }
+
+    getIsLogin();
+
+    console.log('useeffect');
+  };
 
   let content;
   if (loading) {
