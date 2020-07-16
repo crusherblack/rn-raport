@@ -14,9 +14,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 import OpenModelButton from '../../components/OpenModalButton';
 import Modal from '../../components/Modal';
 
+import {Formik} from 'formik';
+import * as yup from 'yup';
+
+const FormSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
+
 const HANDLE_LOGIN = gql`
-  mutation {
-    login(input: {email: "fadhildarma13@gmail.com", password: "kelas2tkj"}) {
+  mutation login($email: EmailAddress!, $password: String!) {
+    login(input: {email: $email, password: $password}) {
       user {
         id
         email
@@ -54,6 +62,9 @@ const Login = () => {
     {
       onCompleted({login}) {
         setStorageToken(login);
+      },
+      onError({err}) {
+        console.log(err);
       },
     },
   );
@@ -96,60 +107,119 @@ const Login = () => {
     }
   };
 
-  const {loading, error, data: usersData} = useQuery(GET_USER);
-
-  let content;
-  if (loading) {
-    content = <Text style={{color: 'white'}}>Loading...</Text>;
-  } else if (error) {
-    content = <Text style={{color: 'white'}}>{error.message}</Text>;
-  } else {
-    content = usersData.users.map((user) => (
-      <Text key={user.email} style={{color: 'white'}}>
-        {user.email}
-      </Text>
-    ));
-  }
-
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholderTextColor={'darkgray'}
-        placeholder={'Password'}
-        secureTextEntry
-      />
-      <TouchableOpacity
-        style={styles.containerBtnLogin}
-        onPress={() => hitLogin()}>
-        <Text style={styles.textBtnLogin}>
-          {loginLoading ? 'Login...' : 'Login'}
-        </Text>
-      </TouchableOpacity>
-      <Text style={{color: 'white'}}>List User</Text>
-      {content}
-      <Text style={{color: 'white'}}>{token}</Text>
-      <OpenModelButton />
-      <Modal />
-    </View>
+    <>
+      <View style={styles.container}>
+        <Formik
+          initialValues={{
+            email: 'testuser@gmail.com',
+            password: 'testuser@gmail.com',
+          }}
+          validationSchema={FormSchema}
+          onSubmit={(values, actions) => {
+            console.log(values);
+            hitLogin({
+              variables: {email: values.email, password: values.password},
+            });
+            actions.resetForm();
+          }}>
+          {({
+            handleSubmit,
+            values,
+            handleChange,
+            handleBlur,
+            errors,
+            touched,
+          }) => (
+            <View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: 24,
+                }}>
+                WELCOME TO RAPORT APP
+              </Text>
+              {loginError && (
+                <Text
+                  style={{
+                    color: 'red',
+                    textAlign: 'center',
+                  }}>
+                  Username or Password is Invalid
+                </Text>
+              )}
+              <TextInput
+                style={[styles.input, {borderColor: '#CED6E0'}]}
+                placeholderTextColor={'darkgray'}
+                placeholder={'Email'}
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+              />
+
+              {touched.email && errors.email && (
+                <Text
+                  style={{
+                    color: 'red',
+                  }}>
+                  {errors.email}
+                </Text>
+              )}
+
+              <TextInput
+                style={[styles.input, {borderColor: '#CED6E0'}]}
+                placeholderTextColor={'darkgray'}
+                placeholder={'Password'}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                secureTextEntry
+              />
+
+              {touched.password && errors.password && (
+                <Text
+                  style={{
+                    color: 'red',
+                  }}>
+                  {errors.password}
+                </Text>
+              )}
+
+              <TouchableOpacity
+                style={styles.containerBtnLogin}
+                onPress={handleSubmit}>
+                <Text style={styles.textBtnLogin}>
+                  {loginLoading ? 'Login...' : 'Login'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'white',
+        }}></View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     padding: 16,
-    paddingTop: 120,
-    alignItems: 'center',
-    backgroundColor: '#141414',
+    backgroundColor: 'white',
+    justifyContent: 'center',
   },
   input: {
-    backgroundColor: '#e8e8e8',
-    width: '100%',
+    marginTop: 10,
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 8,
     color: 'black',
-    marginVertical: 8,
+    borderWidth: 1,
     fontSize: 16,
   },
   containerBtnLogin: {
@@ -157,9 +227,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 9,
-    padding: 15,
+    padding: 10,
     borderRadius: 8,
-    backgroundColor: '#EE4622',
+    backgroundColor: '#FF793F',
   },
   textBtnLogin: {
     color: 'white',

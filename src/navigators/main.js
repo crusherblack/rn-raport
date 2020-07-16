@@ -7,6 +7,7 @@ import QuizList from '../screens/main/QuizList';
 import RaportList from '../screens/main/RaportList';
 import QuizDetail from '../screens/main/QuizDetail';
 import ScoreRecap from '../screens/main/ScoreRecapForm';
+import Raport from '../screens/main/Raport';
 
 const MainStack = createStackNavigator();
 
@@ -33,6 +34,9 @@ const AuthStackNavigator = () => {
       <MainStack.Screen
         name={'ScoreRecapFormStack'}
         component={ScoreRecap}></MainStack.Screen>
+      <MainStack.Screen
+        name={'RaportStack'}
+        component={Raport}></MainStack.Screen>
     </MainStack.Navigator>
   );
 };

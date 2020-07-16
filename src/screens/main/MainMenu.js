@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {gql} from 'apollo-boost';
-import {useMutation, useQuery} from 'react-apollo';
+import {useMutation, useQuery, useLazyQuery} from 'react-apollo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Card from '../../components/Card/Card';
 
@@ -28,7 +28,7 @@ const GET_USER_DETAIL = gql`
 `;
 
 const MainMenu = ({navigation}) => {
-  const [storage, setStorage] = useState();
+  const [storageUserId, setStorage] = useState();
 
   useEffect(() => {
     handleGetStorage();
@@ -37,19 +37,23 @@ const MainMenu = ({navigation}) => {
   const handleGetStorage = async () => {
     const infoStorage = await AsyncStorage.getItem('token');
     let responseObject = JSON.parse(infoStorage);
-    setStorage(responseObject);
+    setStorage(responseObject.userId);
+    getUserDetails();
   };
 
-  const {loading, error, data: usersDetail} = useQuery(GET_USER_DETAIL, {
-    variables: {id: '5f0da7159ac57b006e2964d1'},
-  });
+  const [getUserDetails, {loading, error, data: usersDetail}] = useLazyQuery(
+    GET_USER_DETAIL,
+    {
+      variables: {id: storageUserId},
+    },
+  );
 
   let content;
   if (loading) {
     content = <Text style={{color: 'white'}}>Loading...</Text>;
   } else if (error) {
     content = <Text style={{color: 'white'}}>{error.message}</Text>;
-  } else {
+  } else if (usersDetail) {
     content = (
       <>
         <Text
@@ -102,7 +106,7 @@ const MainMenu = ({navigation}) => {
             image={Menu2}
             title="Raport"
             navigation={navigation}
-            to="RaportListStack"
+            to="RaportStack"
           />
           {/* <TouchableOpacity
             style={styles.containerBtn}

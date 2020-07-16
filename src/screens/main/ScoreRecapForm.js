@@ -66,10 +66,7 @@ const ScoreRecapForm = ({navigation}) => {
             actions.resetForm();
           }}>
           {({handleSubmit, values, setFieldValue, errors, touched}) => (
-            <View
-              style={{
-                padding: 16,
-              }}>
+            <View>
               <Header
                 placement="left"
                 leftComponent={
@@ -107,7 +104,11 @@ const ScoreRecapForm = ({navigation}) => {
                   backgroundColor: 'white',
                 }}
               />
-              <View style={{width: '100%'}}>
+              <View
+                style={{
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                }}>
                 <Text
                   style={
                     touched.educational && errors.educational
