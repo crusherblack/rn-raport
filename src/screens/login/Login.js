@@ -112,8 +112,8 @@ const Login = () => {
       <View style={styles.container}>
         <Formik
           initialValues={{
-            email: 'testuser@gmail.com',
-            password: 'testuser@gmail.com',
+            email: 'fadhildarma13@gmail.com',
+            password: 'kelas2tkj',
           }}
           validationSchema={FormSchema}
           onSubmit={(values, actions) => {
