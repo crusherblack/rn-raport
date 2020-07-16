@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, ScrollView, Button} from 'react-native';
+import {View, Text, ScrollView, Button, TouchableOpacity} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const BasicConfirm = ({
   basicCompetenciesModal,
@@ -29,15 +28,48 @@ const BasicConfirm = ({
         style={{
           padding: 16,
         }}>
-        <Text>{title}</Text>
-        <Text>{subtitle}</Text>
-        <Button
-          title="Select"
+        <Text
+          style={{
+            color: '#FF793F',
+            fontWeight: 'bold',
+            fontSize: 18,
+            marginBottom: 5,
+          }}>
+          {title}
+        </Text>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 15,
+            marginBottom: 5,
+          }}>
+          Bahasa Indonesia - Kompetensi Dasar
+        </Text>
+        <Text>
+          Mencermati gagasan pokok dan gagasan pendukung yang diperoleh dari
+          teks lisan, tulis, atau visual
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#FF793F',
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 20,
+          }}
           onPress={() => {
             setFieldValue(name, title);
             basicConfirmModal.current.close();
             basicCompetenciesModal.current.close();
-          }}></Button>
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}>
+            Select
+          </Text>
+        </TouchableOpacity>
       </View>
     </RBSheet>
   );
