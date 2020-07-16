@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MultiButton from '../../components/RadioButton/RadioButton';
 import ThematicModal from '../../components/Form/Thematic';
 import SubjectModal from '../../components/Form/Subject';
+import BasicCompetenciesModal from '../../components/Form/BasicCompetencies';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -110,6 +111,7 @@ const scoreClassification = [
 const ScoreRecapForm = ({navigation}) => {
   const thematicModal = useRef();
   const subjectModal = useRef();
+  const basicCompetenciesModal = useRef();
   return (
     <SafeAreaView
       style={{
@@ -219,11 +221,22 @@ const ScoreRecapForm = ({navigation}) => {
 
                 <Text style={styles.title}>Subject</Text>
                 <TouchableOpacity onPress={() => subjectModal.current.open()}>
-                  <TextInput style={styles.input} editable={false} />
+                  <TextInput
+                    style={styles.input}
+                    editable={false}
+                    value={values.subject}
+                  />
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Basic Competencies</Text>
-                <TextInput style={styles.input} />
+                <TouchableOpacity
+                  onPress={() => basicCompetenciesModal.current.open()}>
+                  <TextInput
+                    style={styles.input}
+                    editable={false}
+                    value={values.basicCompetencies}
+                  />
+                </TouchableOpacity>
 
                 <ThematicModal
                   thematicModal={thematicModal}
@@ -232,9 +245,25 @@ const ScoreRecapForm = ({navigation}) => {
                   value={values.thematic}
                 />
 
-                <SubjectModal subjectModal={subjectModal} />
+                <SubjectModal
+                  subjectModal={subjectModal}
+                  name="subject"
+                  setFieldValue={setFieldValue}
+                  value={values.subject}
+                />
 
-                <Button title="Submit" onPress={handleSubmit} />
+                <BasicCompetenciesModal
+                  basicCompetenciesModal={basicCompetenciesModal}
+                  name="basicCompetencies"
+                  setFieldValue={setFieldValue}
+                  value={values.basicCompetencies}
+                />
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}>
+                  <Button title="Submit" onPress={handleSubmit} />
+                </View>
               </View>
             )}
           </Formik>

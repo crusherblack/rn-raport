@@ -7,29 +7,48 @@ import {ListItem, SearchBar} from 'react-native-elements';
 
 const list = [
   {
-    name: 'Pendidikan Pancasila dan Kewarganegaraan (PPKn)',
+    name: 'BI KD 3.1',
+    subtitle: 'Mencermati gagasan pokok dan gagasan pendukun…',
   },
   {
-    name: 'Bahasa Indonesia (BI)',
+    name: 'BI KD 4.1',
+    subtitle: 'Menata informasi yang didapat dari teks berdasarka…',
   },
   {
-    name: 'Matematika (MAT)',
+    name: 'BI KD 3.2',
+    subtitle: 'Mencermati keterhubungan antargagasan yang dida…',
   },
   {
-    name: 'Ilmu Pengetahuan Alam (IPA)',
+    name: 'BI KD 4.2',
+    subtitle: 'Menyajikan hasil pencermatan tentang keterhubung…',
   },
   {
-    name: 'Ilmu Pengetahuan Sosial (IPS)',
+    name: 'BI KD 3.3',
+    subtitle: 'Menggali informasi dari seorang tokoh melalui wawa…',
   },
   {
-    name: 'Seni Budaya dan Prakarya (SBdP)',
+    name: 'BI KD 4.3',
+    subtitle: 'Melaporkan hasil wawancara menggunakan kosakat…',
   },
   {
-    name: 'Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)',
+    name: 'BI KD 3.4',
+    subtitle: 'Membandingkan teks petunjuk penggunaan dua alat…',
+  },
+  {
+    name: 'BI KD 4.4',
+    subtitle: 'Menyajikan petunjuk penggunaan alat dalam bentuk …',
+  },
+  {
+    name: 'BI KD 3.5',
+    subtitle: 'Menguraikan pendapat pribadi tentang isi buku sastr…',
+  },
+  {
+    name: 'BI KD 4.5',
+    subtitle: 'Mengomunikasikan pendapat pribadi tentang isi buk…',
   },
 ];
 
-const Subject = ({subjectModal, setFieldValue, value, name}) => {
+const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
 
@@ -44,7 +63,7 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
   return (
     <RBSheet
       dragFromTopOnly={true}
-      ref={subjectModal}
+      ref={basicCompetenciesModal}
       closeOnDragDown={true}
       closeOnPressMask={true}
       customStyles={{
@@ -68,16 +87,16 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
         <Icon
           name="close"
           size={30}
-          onPress={() => subjectModal.current.close()}
+          onPress={() => basicCompetenciesModal.current.close()}
         />
         <Text
           style={{
             fontWeight: 'bold',
             fontSize: 18,
           }}>
-          Subject
+          Basic Competencies
         </Text>
-        <Text style={{color: 'white', marginRight: 20}}>a</Text>
+        <Text style={{color: 'white', marginRight: 10}}>a</Text>
       </View>
 
       <View
@@ -103,11 +122,7 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
           value={search}
         />
       </View>
-      <ScrollView
-        style={{
-          paddingLeft: 5,
-          paddingRight: 5,
-        }}>
+      <ScrollView>
         {list.map((l, i) => (
           <ListItem
             key={i}

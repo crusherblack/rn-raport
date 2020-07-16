@@ -48,6 +48,10 @@ const QuizList = ({navigation}) => {
         }}
         containerStyle={{
           backgroundColor: 'white',
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: 10,
+          paddingRight: 10,
         }}
         placeholder="Search Quiz..."
         onChangeText={(text) => filterQuiz(text)}
