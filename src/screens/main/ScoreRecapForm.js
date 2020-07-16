@@ -19,95 +19,25 @@ import ThematicModal from '../../components/Form/Thematic';
 import SubjectModal from '../../components/Form/Subject';
 import BasicCompetenciesModal from '../../components/Form/BasicCompetencies';
 
+import {
+  educationalStage,
+  classData,
+  semester,
+  scoreClassification,
+} from './list';
+
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-/* const FormSchema = yup.object({
-  title: yup.string().required().min(4),
-  body: yup.string().required().min(8),
-  rating: yup
-    .string()
-    .required()
-    .test('is-num-1-5', 'Rating must be number between 1 - 5', (val) => {
-      return parseInt(val) < 6 && parseInt(val) > 0;
-    }),
-}); */
-
-const educationalStage = [
-  {
-    key: 'SD/MI',
-    text: 'SD/MI',
-  },
-  {
-    key: 'SMP/MTs',
-    text: 'SMP/MTs',
-  },
-  {
-    key: 'SMA/K',
-    text: 'SMA/K',
-  },
-  {
-    key: 'Other',
-    text: 'Other',
-  },
-];
-
-const classData = [
-  {
-    key: 'I',
-    text: 'I',
-  },
-  {
-    key: 'II',
-    text: 'II',
-  },
-  {
-    key: 'III',
-    text: 'III',
-  },
-  {
-    key: 'IV',
-    text: 'IV',
-  },
-  {
-    key: 'V',
-    text: 'V',
-  },
-  {
-    key: 'VI',
-    text: 'VI',
-  },
-];
-
-const semester = [
-  {
-    key: 1,
-    text: 1,
-  },
-  {
-    key: 2,
-    text: 2,
-  },
-];
-
-const scoreClassification = [
-  {
-    key: 'Nilai Harian',
-    text: 'Nilai Harian',
-  },
-  {
-    key: 'UTS',
-    text: 'UTS',
-  },
-  {
-    key: 'Ulangan Akhir',
-    text: 'Ulangan Akhir',
-  },
-  {
-    key: 'Lisan',
-    text: 'Lisan',
-  },
-];
+const FormSchema = yup.object({
+  educational: yup.string().required(),
+  class: yup.string().required(),
+  semester: yup.string().required(),
+  thematic: yup.string().required(),
+  score: yup.string().required(),
+  subject: yup.string().required(),
+  basicCompetencies: yup.string().required(),
+});
 
 const ScoreRecapForm = ({navigation}) => {
   const thematicModal = useRef();
@@ -122,26 +52,20 @@ const ScoreRecapForm = ({navigation}) => {
       <ScrollView>
         <Formik
           initialValues={{
-            thematic: '',
-            subject: '',
-            basicCompetencies: '',
             educational: '',
             class: '',
             semester: '',
+            thematic: '',
             score: '',
+            subject: '',
+            basicCompetencies: '',
           }}
-          /*    validationSchema={FormSchema} */
+          validationSchema={FormSchema}
           onSubmit={(values, actions) => {
             console.log(values);
             actions.resetForm();
           }}>
-          {({
-            handleSubmit,
-            values,
-            setFieldValue,
-            handleChange,
-            handleBlur,
-          }) => (
+          {({handleSubmit, values, setFieldValue, errors, touched}) => (
             <View
               style={{
                 padding: 16,
@@ -184,7 +108,17 @@ const ScoreRecapForm = ({navigation}) => {
                 }}
               />
               <View style={{width: '100%'}}>
-                <Text style={styles.title}>Education Stage</Text>
+                <Text
+                  style={
+                    touched.educational && errors.educational
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Education Stage{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.educational && errors.educational && '*'}
+                  </Text>
+                </Text>
                 <MultiButton
                   options={educationalStage}
                   name="educational"
@@ -192,7 +126,17 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                 />
 
-                <Text style={styles.title}>Class</Text>
+                <Text
+                  style={
+                    touched.class && errors.class
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Class{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.class && errors.class && '*'}
+                  </Text>
+                </Text>
                 <MultiButton
                   options={classData}
                   name="class"
@@ -200,7 +144,17 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                 />
 
-                <Text style={styles.title}>Semester</Text>
+                <Text
+                  style={
+                    touched.semester && errors.semester
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Semester{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.semester && errors.semester && '*'}
+                  </Text>
+                </Text>
                 <MultiButton
                   options={semester}
                   name="semester"
@@ -208,7 +162,17 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                 />
 
-                <Text style={styles.title}>Thematic</Text>
+                <Text
+                  style={
+                    touched.thematic && errors.thematic
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Thematic{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.thematic && errors.thematic && '*'}
+                  </Text>
+                </Text>
 
                 <TouchableOpacity
                   onPress={() => thematicModal.current.open()}
@@ -222,7 +186,17 @@ const ScoreRecapForm = ({navigation}) => {
                   <Icon2 name="caret-down" size={20} color="#747D8C" />
                 </TouchableOpacity>
 
-                <Text style={styles.title}>Score Classification</Text>
+                <Text
+                  style={
+                    touched.score && errors.score
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Score Classification{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.score && errors.score && '*'}
+                  </Text>
+                </Text>
                 <MultiButton
                   options={scoreClassification}
                   name="score"
@@ -230,7 +204,17 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                 />
 
-                <Text style={styles.title}>Subject</Text>
+                <Text
+                  style={
+                    touched.subject && errors.subject
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Subject{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.subject && errors.subject && '*'}
+                  </Text>
+                </Text>
                 <TouchableOpacity
                   onPress={() => subjectModal.current.open()}
                   style={styles.inputContainer}>
@@ -243,7 +227,19 @@ const ScoreRecapForm = ({navigation}) => {
                   <Icon2 name="caret-down" size={20} color="#747D8C" />
                 </TouchableOpacity>
 
-                <Text style={styles.title}>Basic Competencies</Text>
+                <Text
+                  style={
+                    touched.basicCompetencies && errors.basicCompetencies
+                      ? styles.textDanger
+                      : styles.title
+                  }>
+                  Basic Competencies{' '}
+                  <Text style={styles.textDanger}>
+                    {touched.basicCompetencies &&
+                      errors.basicCompetencies &&
+                      '*'}
+                  </Text>
+                </Text>
                 <TouchableOpacity
                   onPress={() => basicCompetenciesModal.current.open()}
                   style={styles.inputContainer}>
@@ -315,7 +311,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
   },
+  textDanger: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
   title: {
     fontWeight: 'bold',
+    color: 'black',
   },
 });
