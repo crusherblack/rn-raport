@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MultiButton from '../../components/RadioButton/RadioButton';
 import ThematicModal from '../../components/Form/Thematic';
+import SubjectModal from '../../components/Form/Subject';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -108,6 +109,7 @@ const scoreClassification = [
 
 const ScoreRecapForm = ({navigation}) => {
   const thematicModal = useRef();
+  const subjectModal = useRef();
   return (
     <SafeAreaView
       style={{
@@ -216,7 +218,9 @@ const ScoreRecapForm = ({navigation}) => {
                 />
 
                 <Text style={styles.title}>Subject</Text>
-                <TextInput style={styles.input} />
+                <TouchableOpacity onPress={() => subjectModal.current.open()}>
+                  <TextInput style={styles.input} editable={false} />
+                </TouchableOpacity>
 
                 <Text style={styles.title}>Basic Competencies</Text>
                 <TextInput style={styles.input} />
@@ -227,6 +231,8 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                   value={values.thematic}
                 />
+
+                <SubjectModal subjectModal={subjectModal} />
 
                 <Button title="Submit" onPress={handleSubmit} />
               </View>
