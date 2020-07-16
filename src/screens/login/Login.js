@@ -49,7 +49,12 @@ const GET_USER = gql`
 const Login = () => {
   const [token, setToken] = useState('');
 
-  const [login, {data}] = useMutation(HANDLE_LOGIN);
+  const [hitLogin, {loading: load, error: errr}] = useMutation(HANDLE_LOGIN, {
+    onCompleted({login}) {
+      setStorageToken(login);
+    },
+  });
+
   const [setLoginTrue, {data: setLoginData}] = useMutation(SET_AUTH_LOGIN);
 
   useEffect(() => {
@@ -62,20 +67,21 @@ const Login = () => {
     } catch (err) {}
   };
 
-  const handleLogin = async () => {
+  const setStorageToken = async (login) => {
     try {
-      login();
-      const dataStorage = {
-        token: data.login.token,
-        userId: data.login.user.id,
-      };
-      await AsyncStorage.setItem('token', JSON.stringify(dataStorage));
-      setToken(data.login.token);
+      await AsyncStorage.setItem(
+        'token',
+        JSON.stringify({
+          token: login.token,
+          userId: login.user.id,
+        }),
+      );
+      setToken(login.token);
       setLoginTrue({
         variables: {
-          id: data.login.user.id,
-          fullName: data.login.user.firstName + ' ' + data.login.user.lastName,
-          email: data.login.user.email,
+          id: login.user.id,
+          fullName: login.user.firstName + ' ' + login.user.lastName,
+          email: login.user.email,
         },
       });
 
@@ -83,7 +89,7 @@ const Login = () => {
       let responseObject = JSON.parse(infoStorage);
       console.log(responseObject);
     } catch (e) {
-      // saving error
+      console.log(e);
     }
   };
 
@@ -112,7 +118,7 @@ const Login = () => {
       />
       <TouchableOpacity
         style={styles.containerBtnLogin}
-        onPress={() => handleLogin()}>
+        onPress={() => hitLogin()}>
         <Text style={styles.textBtnLogin}>Login</Text>
       </TouchableOpacity>
       <Text style={{color: 'white'}}>List User</Text>
