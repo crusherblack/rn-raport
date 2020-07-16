@@ -113,6 +113,7 @@ const ScoreRecapForm = ({navigation}) => {
   const thematicModal = useRef();
   const subjectModal = useRef();
   const basicCompetenciesModal = useRef();
+
   return (
     <SafeAreaView
       style={{

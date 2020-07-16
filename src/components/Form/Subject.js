@@ -119,7 +119,10 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
                 <Icon name="check-bold" size={25} color="#FF793F" />
               ) : null
             }
-            onPress={() => setFieldValue(name, l.name)}
+            onPress={() => {
+              setFieldValue(name, l.name);
+              subjectModal.current.close();
+            }}
           />
         ))}
       </ScrollView>

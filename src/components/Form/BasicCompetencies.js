@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import BasicConfirmModal from './BasicConfirm';
 
 import {ListItem, SearchBar} from 'react-native-elements';
 
@@ -51,6 +53,8 @@ const list = [
 const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
+  const [selectedList, setSelectedList] = useState({});
+  const basicConfirmModal = useRef();
 
   useEffect(() => {
     setSelect(value);
@@ -61,85 +65,101 @@ const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
   };
 
   return (
-    <RBSheet
-      dragFromTopOnly={true}
-      ref={basicCompetenciesModal}
-      closeOnDragDown={true}
-      closeOnPressMask={true}
-      customStyles={{
-        wrapper: {
-          backgroundColor: 'transparent',
-        },
-        draggableIcon: {
-          backgroundColor: 'white',
-        },
-      }}
-      height={700}>
-      <View
-        style={{
-          marginTop: -15,
-          marginLeft: 10,
-          marginRight: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          height: 40,
-        }}>
-        <Icon
-          name="close"
-          size={30}
-          onPress={() => basicCompetenciesModal.current.close()}
-        />
-        <Text
-          style={{
-            fontWeight: 'bold',
-            fontSize: 18,
-          }}>
-          Basic Competencies
-        </Text>
-        <Text style={{color: 'white', marginRight: 10}}>a</Text>
-      </View>
-
-      <View
-        style={{
-          paddingLeft: 16,
-          paddingRight: 16,
-        }}>
-        <SearchBar
-          lightTheme
-          inputStyle={{
-            color: 'black',
-          }}
-          inputContainerStyle={{
-            backgroundColor: '#F0F2F5',
-          }}
-          containerStyle={{
+    <>
+      <RBSheet
+        dragFromTopOnly={true}
+        ref={basicCompetenciesModal}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
             backgroundColor: 'white',
-            padding: 0,
-            borderRadius: 5,
-          }}
-          placeholder="Search Subject..."
-          onChangeText={(text) => filterQuiz(text)}
-          value={search}
-        />
-      </View>
-      <ScrollView>
-        {list.map((l, i) => (
-          <ListItem
-            key={i}
-            title={l.name}
-            subtitle={l.subtitle}
-            bottomDivider
-            titleStyle={{fontWeight: 'bold'}}
-            rightElement={
-              l.name === select ? (
-                <Icon name="check-bold" size={25} color="#FF793F" />
-              ) : null
-            }
-            onPress={() => setFieldValue(name, l.name)}
+          },
+        }}
+        height={700}>
+        <View
+          style={{
+            marginTop: -15,
+            marginLeft: 10,
+            marginRight: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            height: 40,
+          }}>
+          <Icon
+            name="close"
+            size={30}
+            onPress={() => basicCompetenciesModal.current.close()}
           />
-        ))}
-      </ScrollView>
-    </RBSheet>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+            }}>
+            Basic Competencies
+          </Text>
+          <Text style={{color: 'white', marginRight: 10}}>a</Text>
+        </View>
+
+        <View
+          style={{
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}>
+          <SearchBar
+            lightTheme
+            inputStyle={{
+              color: 'black',
+            }}
+            inputContainerStyle={{
+              backgroundColor: '#F0F2F5',
+            }}
+            containerStyle={{
+              backgroundColor: 'white',
+              padding: 0,
+              borderRadius: 5,
+            }}
+            placeholder="Search Subject..."
+            onChangeText={(text) => filterQuiz(text)}
+            value={search}
+          />
+        </View>
+        <ScrollView>
+          {list.map((l, i) => (
+            <ListItem
+              key={i}
+              title={l.name}
+              subtitle={l.subtitle}
+              bottomDivider
+              titleStyle={{fontWeight: 'bold'}}
+              rightElement={
+                l.name === select ? (
+                  <Icon name="check-bold" size={25} color="#FF793F" />
+                ) : null
+              }
+              onPress={() => /* setFieldValue(name, l.name) */ {
+                setSelectedList({
+                  title: l.name,
+                  subtitle: l.subtitle,
+                });
+                basicConfirmModal.current.open();
+              }}
+            />
+          ))}
+        </ScrollView>
+      </RBSheet>
+
+      <BasicConfirmModal
+        basicConfirmModal={basicConfirmModal}
+        basicCompetenciesModal={basicCompetenciesModal}
+        selectedList={selectedList}
+        setFieldValue={setFieldValue}
+        name={name}
+      />
+    </>
   );
 };
 
