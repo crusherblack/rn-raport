@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,9 @@ import {Header, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MultiButton from '../../components/RadioButton/RadioButton';
+import SimpleList from '../../components/List/SimpleList';
+
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -106,6 +109,7 @@ const scoreClassification = [
 ];
 
 const ScoreRecapForm = ({navigation}) => {
+  const refRBSheet = useRef();
   return (
     <SafeAreaView
       style={{
@@ -187,6 +191,48 @@ const ScoreRecapForm = ({navigation}) => {
 
                 <Text style={styles.title}>Basic Competencies</Text>
                 <TextInput style={styles.input} />
+
+                <Button
+                  title="OPEN BOTTOM SHEET"
+                  onPress={() => refRBSheet.current.open()}
+                />
+
+                <RBSheet
+                  ref={refRBSheet}
+                  closeOnDragDown={true}
+                  closeOnPressMask={true}
+                  customStyles={{
+                    wrapper: {
+                      backgroundColor: 'transparent',
+                    },
+                    draggableIcon: {
+                      backgroundColor: '#FF793F',
+                    },
+                  }}
+                  height={550}>
+                  <ScrollView
+                    style={{
+                      padding: 16,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        marginBottom: 10,
+                      }}>
+                      Select Thematic
+                    </Text>
+                    <SimpleList title="Indahnya Kebersamaan" />
+                    <SimpleList title="Selalu Berhemat Energi" />
+                    <SimpleList title="Peduli Terhadap Makhluk Hidup" />
+                    <SimpleList title="Berbagi Pekerjaan" />
+                    <SimpleList title="Pahlawanku" />
+                    <SimpleList title="Indahnya Negeriku" />
+                    <SimpleList title="Cita - citaku" />
+                    <SimpleList title="Tempat Tinggalku" />
+                    <SimpleList title="Makananku Sehat dan Bergizi" />
+                  </ScrollView>
+                </RBSheet>
               </View>
             )}
           </Formik>
