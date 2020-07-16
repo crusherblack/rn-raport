@@ -58,7 +58,13 @@ const MainMenu = ({navigation}) => {
             color: '#FF793F',
             fontWeight: 'bold',
           }}>
-          RAPORT APP <Icon name="ballot" color="#FF793F" size={30} />
+          RAPORT APP{' '}
+          <Icon
+            name="logout"
+            color="#FF793F"
+            size={30}
+            onPress={() => handleLogout()}
+          />
         </Text>
         <Text style={styles.textColor}>
           {usersDetail.user.firstName} {usersDetail.user.lastName}
@@ -73,7 +79,9 @@ const MainMenu = ({navigation}) => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
+
       setLoginFalse();
+      console.log('logout');
     } catch (err) {
       console.log(err);
     }
@@ -97,10 +105,10 @@ const MainMenu = ({navigation}) => {
             to="RaportListStack"
           />
           {/* <TouchableOpacity
-          style={styles.containerBtn}
-          onPress={() => handleLogout()}>
-          <Text style={styles.textBtn}>Log Out</Text>
-        </TouchableOpacity> */}
+            style={styles.containerBtn}
+            onPress={() => handleLogout()}>
+            <Text style={styles.textBtn}>Log Out</Text>
+          </TouchableOpacity> */}
         </View>
       </View>
     </>

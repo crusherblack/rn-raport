@@ -18,7 +18,7 @@ const resolvers = {
     },
 
     setIsLogin: (_, args, {cache}) => {
-      cache.writeData({data: {isLogin: false}});
+      cache.writeData({data: {isLogin: true}});
       return null;
     },
 

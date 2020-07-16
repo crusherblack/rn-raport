@@ -52,9 +52,7 @@ const App = () => {
     data: {isLogin},
   } = useQuery(GET_ISLOGIN); */
 
-  const [getIsLogin, {loading, error, data: isLogin}] = useLazyQuery(
-    GET_ISLOGIN,
-  );
+  const [getIsLogin, {loading, error, data}] = useLazyQuery(GET_ISLOGIN);
 
   const getToken = async () => {
     const infoStorage = await AsyncStorage.getItem('token');
@@ -63,21 +61,22 @@ const App = () => {
 
     if (token) {
       setLoginTrue();
+      console.log('token ada');
     } else {
       setLogout();
     }
 
     getIsLogin();
-
-    console.log('useeffect');
   };
+
+  console.log(data);
 
   let content;
   if (loading) {
     content = <Text style={{color: 'white'}}>Loading...</Text>;
   } else if (error) {
     content = <Text style={{color: 'white'}}>{error.message}</Text>;
-  } else {
+  } else if (data) {
     content = (
       <NavigationContainer>
         <RootStack.Navigator
@@ -85,7 +84,7 @@ const App = () => {
             headerShown: false,
             animationEnabled: false,
           }}>
-          {isLogin ? (
+          {data.isLogin ? (
             <RootStack.Screen name={'MainStack'} component={MainNavigator} />
           ) : (
             <RootStack.Screen name={'LoginStack'} component={LoginNavigator} />
