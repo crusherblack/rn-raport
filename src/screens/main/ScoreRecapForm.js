@@ -154,17 +154,17 @@ const ScoreRecapForm = ({navigation}) => {
           }}>
           <Formik
             initialValues={{
-              title: '',
-              body: '',
-              rating: '',
+              thematic: '',
+
               educational: '',
               class: '',
               semester: '',
+              score: '',
             }}
             /*    validationSchema={FormSchema} */
             onSubmit={(values, actions) => {
               console.log(values);
-              actions.resetForm();
+              //actions.resetForm();
             }}>
             {({
               handleSubmit,
@@ -179,27 +179,42 @@ const ScoreRecapForm = ({navigation}) => {
                   options={educationalStage}
                   name="educational"
                   value={values.educational}
-                  setFieldValues={handleChange('educational')}
+                  setFieldValue={setFieldValue}
                 />
 
                 <Text style={styles.title}>Class</Text>
-                <MultiButton options={classData} name="class" />
+                <MultiButton
+                  options={classData}
+                  name="class"
+                  value={values.class}
+                  setFieldValue={setFieldValue}
+                />
 
                 <Text style={styles.title}>Semester</Text>
-                <MultiButton options={semester} name="semester" />
+                <MultiButton
+                  options={semester}
+                  name="semester"
+                  value={values.semester}
+                  setFieldValue={setFieldValue}
+                />
 
                 <Text style={styles.title}>Thematic</Text>
                 <TextInput style={styles.input} />
 
                 <Text style={styles.title}>Score Classification</Text>
-                <MultiButton options={scoreClassification} name="score" />
+                <MultiButton
+                  options={scoreClassification}
+                  name="score"
+                  value={values.score}
+                  setFieldValue={setFieldValue}
+                />
 
                 <Text style={styles.title}>Subject</Text>
                 <TextInput
                   style={styles.input}
-                  value={values.title}
-                  onChangeText={handleChange('title')}
-                  onBlur={handleBlur('title')}
+                  value={values.thematic}
+                  onChangeText={handleChange('thematic')}
+                  onBlur={handleBlur('thematic')}
                 />
 
                 <Text style={styles.title}>Basic Competencies</Text>
