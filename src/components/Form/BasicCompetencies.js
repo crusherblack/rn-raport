@@ -127,6 +127,7 @@ const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
           <ListItem
             key={i}
             title={l.name}
+            subtitle={l.subtitle}
             bottomDivider
             titleStyle={{fontWeight: 'bold'}}
             rightElement={

@@ -12,6 +12,7 @@ import {
 import {Header, Button} from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon2 from 'react-native-vector-icons/FontAwesome';
 
 import MultiButton from '../../components/RadioButton/RadioButton';
 import ThematicModal from '../../components/Form/Thematic';
@@ -118,64 +119,69 @@ const ScoreRecapForm = ({navigation}) => {
         backgroundColor: 'white',
       }}>
       <ScrollView>
-        <Header
-          placement="left"
-          leftComponent={
-            <Icon name="close" size={30} onPress={() => navigation.goBack()} />
-          }
-          placement="center"
-          centerComponent={{
-            text: 'Score Recap',
-            style: {
-              fontSize: 18,
-              fontWeight: 'bold',
-            },
+        <Formik
+          initialValues={{
+            thematic: '',
+            subject: '',
+            basicCompetencies: '',
+            educational: '',
+            class: '',
+            semester: '',
+            score: '',
           }}
-          rightComponent={
-            <Button
-              title="Save"
-              type="outline"
-              buttonStyle={{
-                borderColor: 'white',
-                borderWidth: 1,
-                padding: 2,
-              }}
-              titleStyle={{
-                color: '#FF793F',
-                fontWeight: 'bold',
-              }}
-            />
-          }
-          containerStyle={{
-            backgroundColor: 'white',
-          }}
-        />
-        <View
-          style={{
-            padding: 16,
+          /*    validationSchema={FormSchema} */
+          onSubmit={(values, actions) => {
+            console.log(values);
+            actions.resetForm();
           }}>
-          <Formik
-            initialValues={{
-              thematic: '',
-              subject: '',
-              basicCompetencies: '',
-              educational: '',
-              class: '',
-              semester: '',
-              score: '',
-            }}
-            /*    validationSchema={FormSchema} */
-            onSubmit={(values, actions) => {
-              console.table(values);
-              actions.resetForm();
-            }}>
-            {({
-              handleSubmit,
-              values,
-              setFieldValue,
-              handleChange,
-              handleBlur,
-            }) => (
+          {({
+            handleSubmit,
+            values,
+            setFieldValue,
+            handleChange,
+            handleBlur,
+          }) => (
+            <View
+              style={{
+                padding: 16,
+              }}>
+              <Header
+                placement="left"
+                leftComponent={
+                  <Icon
+                    name="close"
+                    size={30}
+                    onPress={() => navigation.goBack()}
+                  />
+                }
+                placement="center"
+                centerComponent={{
+                  text: 'Score Recap',
+                  style: {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                  },
+                }}
+                rightComponent={
+                  <Button
+                    title="Save"
+                    type="outline"
+                    buttonStyle={{
+                      borderColor: 'white',
+                      borderWidth: 1,
+                      padding: 2,
+                    }}
+                    titleStyle={{
+                      color: '#FF793F',
+                      fontWeight: 'bold',
+                    }}
+                    onPress={handleSubmit}
+                  />
+                }
+                containerStyle={{
+                  backgroundColor: 'white',
+                }}
+              />
               <View style={{width: '100%'}}>
                 <Text style={styles.title}>Education Stage</Text>
                 <MultiButton
@@ -203,12 +209,16 @@ const ScoreRecapForm = ({navigation}) => {
 
                 <Text style={styles.title}>Thematic</Text>
 
-                <TouchableOpacity onPress={() => thematicModal.current.open()}>
+                <TouchableOpacity
+                  onPress={() => thematicModal.current.open()}
+                  style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
                     value={values.thematic}
                     editable={false}
+                    placeholder="e.g. Berbagi Pekerjaan"
                   />
+                  <Icon2 name="caret-down" size={20} color="#747D8C" />
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Score Classification</Text>
@@ -220,22 +230,29 @@ const ScoreRecapForm = ({navigation}) => {
                 />
 
                 <Text style={styles.title}>Subject</Text>
-                <TouchableOpacity onPress={() => subjectModal.current.open()}>
+                <TouchableOpacity
+                  onPress={() => subjectModal.current.open()}
+                  style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
                     editable={false}
                     value={values.subject}
+                    placeholder="e.g. Bahasa Indonesia"
                   />
+                  <Icon2 name="caret-down" size={20} color="#747D8C" />
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Basic Competencies</Text>
                 <TouchableOpacity
-                  onPress={() => basicCompetenciesModal.current.open()}>
+                  onPress={() => basicCompetenciesModal.current.open()}
+                  style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
                     editable={false}
                     value={values.basicCompetencies}
+                    placeholder="e.g. BI KD 3.1"
                   />
+                  <Icon2 name="caret-down" size={20} color="#747D8C" />
                 </TouchableOpacity>
 
                 <ThematicModal
@@ -258,16 +275,10 @@ const ScoreRecapForm = ({navigation}) => {
                   setFieldValue={setFieldValue}
                   value={values.basicCompetencies}
                 />
-                <View
-                  style={{
-                    marginTop: 10,
-                  }}>
-                  <Button title="Submit" onPress={handleSubmit} />
-                </View>
               </View>
-            )}
-          </Formik>
-        </View>
+            </View>
+          )}
+        </Formik>
       </ScrollView>
     </SafeAreaView>
   );
@@ -283,13 +294,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#141414',
   },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderColor: '#CED6E0',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 5,
+    paddingRight: 15,
+    marginTop: 10,
+    marginBottom: 15,
+  },
   input: {
-    backgroundColor: '#e8e8e8',
+    backgroundColor: 'white',
     width: '100%',
     padding: 10,
-    borderRadius: 8,
+    margin: 0,
     color: 'black',
-    marginVertical: 8,
     fontSize: 16,
   },
   title: {
