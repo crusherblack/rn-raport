@@ -21,7 +21,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-const FormSchema = yup.object({
+/* const FormSchema = yup.object({
   title: yup.string().required().min(4),
   body: yup.string().required().min(8),
   rating: yup
@@ -30,7 +30,7 @@ const FormSchema = yup.object({
     .test('is-num-1-5', 'Rating must be number between 1 - 5', (val) => {
       return parseInt(val) < 6 && parseInt(val) > 0;
     }),
-});
+}); */
 
 const educationalStage = [
   {
@@ -161,33 +161,46 @@ const ScoreRecapForm = ({navigation}) => {
               class: '',
               semester: '',
             }}
-            validationSchema={FormSchema}
+            /*    validationSchema={FormSchema} */
             onSubmit={(values, actions) => {
               console.log(values);
               actions.resetForm();
             }}>
-            {(props) => (
+            {({
+              handleSubmit,
+              values,
+              setFieldValue,
+              handleChange,
+              handleBlur,
+            }) => (
               <View style={{width: '100%'}}>
-                <Text style={{color: 'white', fontSize: 24}}>
-                  Latihan Validasi Formik
-                </Text>
                 <Text style={styles.title}>Education Stage</Text>
-                <MultiButton options={educationalStage} />
+                <MultiButton
+                  options={educationalStage}
+                  name="educational"
+                  value={values.educational}
+                  setFieldValues={handleChange('educational')}
+                />
 
                 <Text style={styles.title}>Class</Text>
-                <MultiButton options={classData} />
+                <MultiButton options={classData} name="class" />
 
                 <Text style={styles.title}>Semester</Text>
-                <MultiButton options={semester} />
+                <MultiButton options={semester} name="semester" />
 
                 <Text style={styles.title}>Thematic</Text>
                 <TextInput style={styles.input} />
 
                 <Text style={styles.title}>Score Classification</Text>
-                <MultiButton options={scoreClassification} />
+                <MultiButton options={scoreClassification} name="score" />
 
                 <Text style={styles.title}>Subject</Text>
-                <TextInput style={styles.input} />
+                <TextInput
+                  style={styles.input}
+                  value={values.title}
+                  onChangeText={handleChange('title')}
+                  onBlur={handleBlur('title')}
+                />
 
                 <Text style={styles.title}>Basic Competencies</Text>
                 <TextInput style={styles.input} />
@@ -233,6 +246,7 @@ const ScoreRecapForm = ({navigation}) => {
                     <SimpleList title="Makananku Sehat dan Bergizi" />
                   </ScrollView>
                 </RBSheet>
+                <Button title="Submit" onPress={handleSubmit} />
               </View>
             )}
           </Formik>

@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 
-const RadioButton = ({options}) => {
+import {useFormikContext, Formik, Form, Field} from 'formik';
+
+const RadioButton = ({options, setFieldValues}) => {
   const [value, setValue] = useState(null);
 
   return (
@@ -13,6 +15,7 @@ const RadioButton = ({options}) => {
               style={value === item.key ? styles.buttonChecked : styles.button}
               onPress={() => {
                 setValue(item.key);
+                setFieldValues(item.key);
               }}>
               <Text
                 style={value === item.key ? styles.textChecked : styles.text}>
