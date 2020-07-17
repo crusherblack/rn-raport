@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {list2} from './list';
 
 const QuizDetail = ({navigation, route}) => {
-  const {quizId} = route.params;
+  const {quizName, deadLine, className, description} = route.params;
 
   return (
     <SafeAreaView
@@ -71,7 +71,7 @@ const QuizDetail = ({navigation, route}) => {
                 fontSize: 20,
                 fontWeight: 'bold',
               }}>
-              Ulangan Biologi BAB II - {quizId}
+              {quizName}
             </Text>
             <Text
               style={{
@@ -95,7 +95,7 @@ const QuizDetail = ({navigation, route}) => {
                 fontWeight: 'bold',
               }}>
               {' '}
-              April 28, 2020 - 11.30 WIB
+              {deadLine}
             </Text>
           </Text>
           <Text
@@ -108,15 +108,14 @@ const QuizDetail = ({navigation, route}) => {
                 fontWeight: 'bold',
               }}>
               {' '}
-              XI IPS 3 SMA
+              {className}
             </Text>
           </Text>
           <Text
             style={{
               marginTop: 10,
             }}>
-            Silahkan kerjaan quiz ini dengan seksama. Siswa diperbolehkan untuk
-            open book, googling dsb. Jangan sampai telat mengumpulkan.
+            {description}
           </Text>
           <TouchableOpacity
             style={{
@@ -141,7 +140,13 @@ const QuizDetail = ({navigation, route}) => {
           {list2.map((l, i) => (
             <ListItem
               key={i}
-              leftAvatar={{source: {uri: l.avatar_url}}}
+              leftAvatar={{
+                source: {
+                  uri: `https://i.pravatar.cc/50?img=${Math.floor(
+                    Math.random() * 10,
+                  )}`,
+                },
+              }}
               title={l.name}
               subtitle={l.subtitle}
               bottomDivider

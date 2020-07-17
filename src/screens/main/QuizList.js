@@ -5,10 +5,8 @@ import {ListItem, SearchBar, Header} from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {list} from './list';
-
 import {gql, NetworkStatus} from 'apollo-boost';
-import {useQuery, useLazyQuery} from 'react-apollo';
+import {useLazyQuery} from 'react-apollo';
 
 import dayjs from 'dayjs';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -20,6 +18,10 @@ const GET_QUIZ = gql`
       name
       description
       endDate
+      classId {
+        id
+        name
+      }
     }
   }
 `;
@@ -48,20 +50,43 @@ const QuizList = ({navigation}) => {
   } else if (data) {
     content = (
       <View>
-        {data.quizzes.map((l, i) => (
+        {data.quizzes.map((quiz, index) => (
           <ListItem
-            key={i}
+            key={index}
             leftIcon={<Icon name="clipboard-text" size={24} color="#FF793F" />}
-            title={l.name}
-            subtitle={'Deadline ' + dayjs(l.endDate).format('MMMM D YYYY')}
+            title={quiz.name}
+            subtitle={'Deadline ' + dayjs(quiz.endDate).format('MMMM D YYYY')}
             bottomDivider
             onPress={() =>
               navigation.navigate('QuizDetailStack', {
-                quizId: i,
+                quizId: quiz.id,
+                quizName: quiz.name,
+                deadLine: dayjs(quiz.endDate).format('MMMM D YYYY'),
+                classId: quiz.classId.id,
+                className: quiz.classId.name,
+                description: quiz.description,
               })
             }
           />
         ))}
+        <TouchableOpacity
+          onPress={() => refetch()}
+          style={{
+            backgroundColor: '#FF793F',
+            padding: 15,
+            margin: 10,
+            borderRadius: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 16,
+            }}>
+            Refetch
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -115,24 +140,6 @@ const QuizList = ({navigation}) => {
           value={search}
         />
         {content}
-        <TouchableOpacity
-          onPress={() => refetch()}
-          style={{
-            backgroundColor: '#FF793F',
-            padding: 15,
-            margin: 10,
-            borderRadius: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 16,
-            }}>
-            Refetch
-          </Text>
-        </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
   );

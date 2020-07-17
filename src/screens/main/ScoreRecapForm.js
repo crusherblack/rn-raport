@@ -45,7 +45,7 @@ const ScoreRecapForm = ({navigation}) => {
   const subjectModal = useRef();
   const basicCompetenciesModal = useRef();
 
-  const [saveRaport, {data}] = useMutation();
+  /* const [saveRaport, {data}] = useMutation();
 
   const saveScoreToRaport = () => {
     const oke = new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ const ScoreRecapForm = ({navigation}) => {
     Promise.All([oke])
       .then((result) => {})
       .catch((err) => {});
-  };
+  }; */
 
   return (
     <SafeAreaView
