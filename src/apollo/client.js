@@ -61,11 +61,26 @@ const link = split(
   httpAuthLink,
 );
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'cache-and-network',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'cache-first',
+    errorPolicy: 'all',
+  },
+  mutate: {
+    errorPolicy: 'all',
+  },
+};
+
 const client = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache,
   resolvers,
   connectToDevTools: true,
+  defaultOptions,
 });
 
 client.cache.writeData({

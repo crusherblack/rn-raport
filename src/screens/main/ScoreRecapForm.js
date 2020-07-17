@@ -28,6 +28,7 @@ import {
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {useMutation} from 'react-apollo';
 
 const FormSchema = yup.object({
   educational: yup.string().required(),
@@ -43,6 +44,18 @@ const ScoreRecapForm = ({navigation}) => {
   const thematicModal = useRef();
   const subjectModal = useRef();
   const basicCompetenciesModal = useRef();
+
+  const [saveRaport, {data}] = useMutation();
+
+  const saveScoreToRaport = () => {
+    const oke = new Promise((resolve, reject) => {
+      console.log(oke);
+    });
+
+    Promise.All([oke])
+      .then((result) => {})
+      .catch((err) => {});
+  };
 
   return (
     <SafeAreaView

@@ -55,11 +55,11 @@ const MainMenu = ({navigation}) => {
     content = <Text style={{color: 'white'}}>{error.message}</Text>;
   } else if (usersDetail) {
     content = (
-      <>
+      <View>
         <Text
           style={{
             fontSize: 30,
-            color: '#FF793F',
+            color: 'white',
             fontWeight: 'bold',
           }}>
           RAPORT APP{' '}
@@ -74,7 +74,7 @@ const MainMenu = ({navigation}) => {
           {usersDetail.user.firstName} {usersDetail.user.lastName}
         </Text>
         <Text style={styles.textColor}>{usersDetail.user.email}</Text>
-      </>
+      </View>
     );
   }
 
