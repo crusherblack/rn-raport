@@ -93,7 +93,7 @@ const MainMenu = ({navigation}) => {
 
   return (
     <>
-      <View style={{flex: 1, backgroundColor: 'black'}}>
+      <View style={{flex: 2, backgroundColor: 'black'}}>
         <View style={styles.containerTop}>{content}</View>
         <View style={styles.containerMiddle}>
           <Card

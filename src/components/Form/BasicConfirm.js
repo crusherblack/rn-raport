@@ -17,7 +17,7 @@ const BasicConfirm = ({
       closeOnPressMask={true}
       customStyles={{
         wrapper: {
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
         },
         draggableIcon: {
           backgroundColor: '#FF793F',
