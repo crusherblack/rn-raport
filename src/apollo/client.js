@@ -88,6 +88,7 @@ client.cache.writeData({
     isModalOpen: false,
     userInfo: null,
     isLogin: false,
+    userQuiz: [],
   },
 });
 

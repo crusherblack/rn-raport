@@ -7,7 +7,7 @@ const resolvers = {
         data: {
           isLogin: true,
           userInfo: {
-            __typename: 'User Detail',
+            __typename: 'Object',
             id,
             fullName,
             email,
@@ -26,15 +26,20 @@ const resolvers = {
       cache.writeData({data: {isLogin: false}});
       return null;
     },
-    openModalMutation: (_, args, {cache}) => {
+    setUserQuizToCache: (_, {dataUserQuiz}, {cache}) => {
+      cache.writeData({data: {userQuiz: dataUserQuiz}});
+      return null;
+    },
+
+    /*  openModalMutation: (_, args, {cache}) => {
       cache.writeData({data: {isModalOpen: true}});
       return null;
     },
     closeModalMutation: (_, args, {cache}) => {
       cache.writeData({data: {isModalOpen: false}});
       return null;
-    },
-    addProductToCart: (_, {id, title, price}, {cache}) => {
+    }, */
+    /* addProductToCart: (_, {id, title, price}, {cache}) => {
       const query = gql`
         query ProductsInCart {
           selectedProducts @client {
@@ -56,7 +61,7 @@ const resolvers = {
 
       cache.writeQuery({query, data});
       return null;
-    },
+    }, */
   },
 };
 

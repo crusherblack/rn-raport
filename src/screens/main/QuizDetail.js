@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 import {ListItem, Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {useQuery} from 'react-apollo';
+import {useLazyQuery, useMutation} from 'react-apollo';
 import {gql} from 'apollo-boost';
 
 const GET_USER_QUIZ = gql`
@@ -26,6 +26,12 @@ const GET_USER_QUIZ = gql`
   }
 `;
 
+const SET_USER_QUIZ_TO_CACHE = gql`
+  mutation setUserQuizToCache($dataUserQuiz: Array!) {
+    setUserQuizToCache(dataUserQuiz: $dataUserQuiz) @client
+  }
+`;
+
 const QuizDetail = ({navigation, route}) => {
   const {
     quizName,
@@ -36,13 +42,27 @@ const QuizDetail = ({navigation, route}) => {
     classId,
   } = route.params;
 
-  const {loading, error, data} = useQuery(GET_USER_QUIZ, {
+  const [getUserQuiz, {loading, error, data}] = useLazyQuery(GET_USER_QUIZ, {
+    onCompleted() {
+      setUserQuiz();
+    },
     variables: {
       quizIdId: quizId,
     },
   });
 
-  console.log(data);
+  const [setUserQuiz, {loading: loadingSet}] = useMutation(
+    SET_USER_QUIZ_TO_CACHE,
+    {
+      variables: {
+        dataUserQuiz: data,
+      },
+    },
+  );
+
+  useEffect(() => {
+    getUserQuiz();
+  }, []);
 
   let content;
   if (loading) {
