@@ -5,33 +5,23 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {ListItem, SearchBar} from 'react-native-elements';
 
-const list = [
-  {
-    name: 'Pendidikan Pancasila dan Kewarganegaraan (PPKn)',
-  },
-  {
-    name: 'Bahasa Indonesia (BI)',
-  },
-  {
-    name: 'Matematika (MAT)',
-  },
-  {
-    name: 'Ilmu Pengetahuan Alam (IPA)',
-  },
-  {
-    name: 'Ilmu Pengetahuan Sosial (IPS)',
-  },
-  {
-    name: 'Seni Budaya dan Prakarya (SBdP)',
-  },
-  {
-    name: 'Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)',
-  },
-];
+import {gql} from 'apollo-boost';
+import {useQuery} from 'react-apollo';
+
+const GET_SUBJECT = gql`
+  query {
+    subjects {
+      id
+      name
+    }
+  }
+`;
 
 const Subject = ({subjectModal, setFieldValue, value, name}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
+
+  const {loading, error, data} = useQuery(GET_SUBJECT);
 
   useEffect(() => {
     setSelect(value);
@@ -40,6 +30,39 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
   const filterQuiz = (text) => {
     setSearch(text);
   };
+
+  let content;
+  if (loading) {
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
+  } else if (error) {
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
+  } else if (data) {
+    content = (
+      <ScrollView
+        style={{
+          paddingLeft: 5,
+          paddingRight: 5,
+        }}>
+        {data.subjects.map((l, i) => (
+          <ListItem
+            key={i}
+            title={l.name}
+            bottomDivider
+            titleStyle={{fontWeight: 'bold'}}
+            rightElement={
+              l.id === select ? (
+                <Icon name="check-bold" size={25} color="#FF793F" />
+              ) : null
+            }
+            onPress={() => {
+              setFieldValue(name, l.id);
+              subjectModal.current.close();
+            }}
+          />
+        ))}
+      </ScrollView>
+    );
+  }
 
   return (
     <RBSheet
@@ -103,29 +126,7 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
           value={search}
         />
       </View>
-      <ScrollView
-        style={{
-          paddingLeft: 5,
-          paddingRight: 5,
-        }}>
-        {list.map((l, i) => (
-          <ListItem
-            key={i}
-            title={l.name}
-            bottomDivider
-            titleStyle={{fontWeight: 'bold'}}
-            rightElement={
-              l.name === select ? (
-                <Icon name="check-bold" size={25} color="#FF793F" />
-              ) : null
-            }
-            onPress={() => {
-              setFieldValue(name, l.name);
-              subjectModal.current.close();
-            }}
-          />
-        ))}
-      </ScrollView>
+      {content}
     </RBSheet>
   );
 };

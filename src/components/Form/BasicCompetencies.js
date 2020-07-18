@@ -7,54 +7,26 @@ import BasicConfirmModal from './BasicConfirm';
 
 import {ListItem, SearchBar} from 'react-native-elements';
 
-const list = [
-  {
-    name: 'BI KD 3.1',
-    subtitle: 'Mencermati gagasan pokok dan gagasan pendukun…',
-  },
-  {
-    name: 'BI KD 4.1',
-    subtitle: 'Menata informasi yang didapat dari teks berdasarka…',
-  },
-  {
-    name: 'BI KD 3.2',
-    subtitle: 'Mencermati keterhubungan antargagasan yang dida…',
-  },
-  {
-    name: 'BI KD 4.2',
-    subtitle: 'Menyajikan hasil pencermatan tentang keterhubung…',
-  },
-  {
-    name: 'BI KD 3.3',
-    subtitle: 'Menggali informasi dari seorang tokoh melalui wawa…',
-  },
-  {
-    name: 'BI KD 4.3',
-    subtitle: 'Melaporkan hasil wawancara menggunakan kosakat…',
-  },
-  {
-    name: 'BI KD 3.4',
-    subtitle: 'Membandingkan teks petunjuk penggunaan dua alat…',
-  },
-  {
-    name: 'BI KD 4.4',
-    subtitle: 'Menyajikan petunjuk penggunaan alat dalam bentuk …',
-  },
-  {
-    name: 'BI KD 3.5',
-    subtitle: 'Menguraikan pendapat pribadi tentang isi buku sastr…',
-  },
-  {
-    name: 'BI KD 4.5',
-    subtitle: 'Mengomunikasikan pendapat pribadi tentang isi buk…',
-  },
-];
+import {gql} from 'apollo-boost';
+import {useQuery} from 'react-apollo';
+
+const GET_BASIC_COMPETENCIES = gql`
+  query {
+    competences {
+      id
+      name
+      description
+    }
+  }
+`;
 
 const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
   const [selectedList, setSelectedList] = useState({});
   const basicConfirmModal = useRef();
+
+  const {loading, error, data} = useQuery(GET_BASIC_COMPETENCIES);
 
   useEffect(() => {
     setSelect(value);
@@ -63,6 +35,40 @@ const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
   const filterQuiz = (text) => {
     setSearch(text);
   };
+
+  let content;
+  if (loading) {
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
+  } else if (error) {
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
+  } else if (data) {
+    content = (
+      <ScrollView>
+        {data.competences.map((l, i) => (
+          <ListItem
+            key={i}
+            title={l.name}
+            subtitle={l.description}
+            bottomDivider
+            titleStyle={{fontWeight: 'bold'}}
+            rightElement={
+              l.id === select ? (
+                <Icon name="check-bold" size={25} color="#FF793F" />
+              ) : null
+            }
+            onPress={() => {
+              setSelectedList({
+                id: l.id,
+                title: l.name,
+                subtitle: l.description,
+              });
+              basicConfirmModal.current.open();
+            }}
+          />
+        ))}
+      </ScrollView>
+    );
+  }
 
   return (
     <>
@@ -127,29 +133,7 @@ const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
             value={search}
           />
         </View>
-        <ScrollView>
-          {list.map((l, i) => (
-            <ListItem
-              key={i}
-              title={l.name}
-              subtitle={l.subtitle}
-              bottomDivider
-              titleStyle={{fontWeight: 'bold'}}
-              rightElement={
-                l.name === select ? (
-                  <Icon name="check-bold" size={25} color="#FF793F" />
-                ) : null
-              }
-              onPress={() => /* setFieldValue(name, l.name) */ {
-                setSelectedList({
-                  title: l.name,
-                  subtitle: l.subtitle,
-                });
-                basicConfirmModal.current.open();
-              }}
-            />
-          ))}
-        </ScrollView>
+        {content}
       </RBSheet>
 
       <BasicConfirmModal

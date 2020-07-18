@@ -9,10 +9,73 @@ import {
 import {ListItem, Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {list2} from './list';
+import {useQuery} from 'react-apollo';
+import {gql} from 'apollo-boost';
+
+const GET_USER_BY_CLASS = gql`
+  query quizzes($classId: String!) {
+    users(where: {classIdId: $classId}) {
+      id
+      firstName
+      lastName
+      email
+      classId {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const QuizDetail = ({navigation, route}) => {
-  const {quizName, deadLine, className, description} = route.params;
+  const {
+    quizName,
+    deadLine,
+    className,
+    description,
+    quizId,
+    classId,
+  } = route.params;
+
+  const {loading, error, data} = useQuery(GET_USER_BY_CLASS, {
+    variables: {
+      classId,
+    },
+  });
+
+  console.log(data);
+
+  let content;
+  if (loading) {
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
+  } else if (error) {
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
+  } else if (data) {
+    content = (
+      <ScrollView>
+        {data.users.map((user, index) => (
+          <ListItem
+            key={index}
+            leftAvatar={{
+              source: {
+                uri: `https://i.pravatar.cc/50?img=${Math.floor(
+                  Math.random() * 10,
+                )}`,
+              },
+            }}
+            title={user.firstName + user.lastName}
+            subtitle={user.email}
+            bottomDivider
+            onPress={() =>
+              navigation.navigate('QuizDetailStack', {
+                quizId: index,
+              })
+            }
+          />
+        ))}
+      </ScrollView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -136,28 +199,7 @@ const QuizDetail = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView>
-          {list2.map((l, i) => (
-            <ListItem
-              key={i}
-              leftAvatar={{
-                source: {
-                  uri: `https://i.pravatar.cc/50?img=${Math.floor(
-                    Math.random() * 10,
-                  )}`,
-                },
-              }}
-              title={l.name}
-              subtitle={l.subtitle}
-              bottomDivider
-              onPress={() =>
-                navigation.navigate('QuizDetailStack', {
-                  quizId: i,
-                })
-              }
-            />
-          ))}
-        </ScrollView>
+        {content}
       </View>
     </SafeAreaView>
   );
