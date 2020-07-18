@@ -4,47 +4,66 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import SimpleList from '../List/SimpleList';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const thematic = [
-  {
-    key: 'Indahnya Kebersamaan',
-    text: 'Indahnya Kebersamaan',
-  },
-  {
-    key: 'Selalu Berhemat Energi',
-    text: 'Selalu Berhemat Energi',
-  },
-  {
-    key: 'Peduli Terhadap Makhluk Hidup',
-    text: 'Peduli Terhadap Makhluk Hidup',
-  },
-  {
-    key: 'Berbagi Pekerjaan',
-    text: 'Berbagi Pekerjaan',
-  },
-  {
-    key: 'Pahlawanku',
-    text: 'Pahlawanku',
-  },
-  {
-    key: 'Indahnya Negeriku',
-    text: 'Indahnya Negeriku',
-  },
-  {
-    key: 'Cita - citaku',
-    text: 'Cita - citaku',
-  },
-  {
-    key: 'Tempat Tinggalku',
-    text: 'Tempat Tinggalku',
-  },
-  {
-    key: 'Makananku Sehat dan Bergizi',
-    text: 'Makananku Sehat dan Bergizi',
-  },
-];
+import {gql} from 'apollo-boost';
 
-const Thematic = ({thematicModal, value, setFieldValue, name}) => {
+import {useQuery} from 'react-apollo';
+
+const GET_THEMATIC = gql`
+  query {
+    thematics {
+      id
+      name
+    }
+  }
+`;
+
+const Thematic = ({
+  thematicModal,
+  value,
+  setFieldValue,
+  name,
+  setThematicName,
+}) => {
   const [select, setSelect] = useState(null);
+
+  const {data, error, loading} = useQuery(GET_THEMATIC);
+
+  let content;
+  if (loading) {
+    content = <Text style={{color: 'white'}}>Loading...</Text>;
+  } else if (error) {
+    content = <Text style={{color: 'white'}}>{error.message}</Text>;
+  } else if (data) {
+    content = (
+      <ScrollView
+        style={{
+          padding: 16,
+        }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginBottom: 10,
+          }}>
+          Select Thematic
+        </Text>
+        {data.thematics.map((data, index) => (
+          <View key={index}>
+            <SimpleList
+              keyData={data.id}
+              title={data.name}
+              checked={data.id === select ? true : false}
+              setSelect={setSelect}
+              setFieldValue={setFieldValue}
+              name={name}
+              thematicModal={thematicModal}
+              setThematicName={setThematicName}
+            />
+          </View>
+        ))}
+      </ScrollView>
+    );
+  }
 
   useEffect(() => {
     setSelect(value);
@@ -64,32 +83,7 @@ const Thematic = ({thematicModal, value, setFieldValue, name}) => {
         },
       }}
       height={550}>
-      <ScrollView
-        style={{
-          padding: 16,
-        }}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            marginBottom: 10,
-          }}>
-          Select Thematic
-        </Text>
-        {thematic.map((data, index) => (
-          <View key={index}>
-            <SimpleList
-              keyData={data.key}
-              title={data.text}
-              checked={data.key === select ? true : false}
-              setSelect={setSelect}
-              setFieldValue={setFieldValue}
-              name={name}
-              thematicModal={thematicModal}
-            />
-          </View>
-        ))}
-      </ScrollView>
+      {content}
     </RBSheet>
   );
 };

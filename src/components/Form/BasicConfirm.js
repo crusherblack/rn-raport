@@ -8,6 +8,7 @@ const BasicConfirm = ({
   selectedList: {title, subtitle, id},
   name,
   setFieldValue,
+  setBasicComName,
 }) => {
   return (
     <RBSheet
@@ -57,6 +58,7 @@ const BasicConfirm = ({
             marginTop: 20,
           }}
           onPress={() => {
+            setBasicComName(title);
             setFieldValue(name, id);
             basicConfirmModal.current.close();
             basicCompetenciesModal.current.close();

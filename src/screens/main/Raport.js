@@ -34,7 +34,7 @@ const Raport = ({navigation}) => {
         }
         placement="center"
         centerComponent={{
-          text: 'Quiz',
+          text: 'Raport',
           style: {
             fontSize: 18,
             fontWeight: 'bold',

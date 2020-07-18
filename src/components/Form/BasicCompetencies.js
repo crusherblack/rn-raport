@@ -20,7 +20,13 @@ const GET_BASIC_COMPETENCIES = gql`
   }
 `;
 
-const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
+const Subject = ({
+  basicCompetenciesModal,
+  setFieldValue,
+  value,
+  name,
+  setBasicComName,
+}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
   const [selectedList, setSelectedList] = useState({});
@@ -142,6 +148,7 @@ const Subject = ({basicCompetenciesModal, setFieldValue, value, name}) => {
         selectedList={selectedList}
         setFieldValue={setFieldValue}
         name={name}
+        setBasicComName={setBasicComName}
       />
     </>
   );

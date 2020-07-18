@@ -9,6 +9,7 @@ const SimpleList = ({
   name,
   setFieldValue,
   thematicModal,
+  setThematicName,
 }) => {
   const styles = {
     style1: {
@@ -25,6 +26,7 @@ const SimpleList = ({
         justifyContent: 'space-between',
       }}
       onPress={() => {
+        setThematicName(title);
         thematicModal.current.close();
         setFieldValue(name, keyData);
       }}>

@@ -52,28 +52,89 @@ const QuizDetail = ({navigation, route}) => {
     content = <Text style={{color: 'white'}}>{error.message}</Text>;
   } else if (data) {
     content = (
-      <ScrollView>
-        {data.users.map((user, index) => (
-          <ListItem
-            key={index}
-            leftAvatar={{
-              source: {
-                uri: `https://i.pravatar.cc/50?img=${Math.floor(
-                  Math.random() * 10,
-                )}`,
-              },
-            }}
-            title={user.firstName + user.lastName}
-            subtitle={user.email}
-            bottomDivider
-            onPress={() =>
-              navigation.navigate('QuizDetailStack', {
-                quizId: index,
-              })
-            }
-          />
-        ))}
-      </ScrollView>
+      <>
+        {data.users.length > 0 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <View
+              style={{
+                padding: 10,
+                borderBottomColor: '#FF793F',
+                borderBottomWidth: 3,
+              }}>
+              <Text
+                style={{
+                  color: '#FF793F',
+                  fontWeight: 'bold',
+                }}>
+                Submitted Quizzes ({data.users.length})
+              </Text>
+            </View>
+            <View
+              style={{
+                padding: 10,
+              }}>
+              <Text
+                style={{
+                  color: '#747D8C',
+                  fontWeight: 'bold',
+                }}>
+                Need to Submit (5)
+              </Text>
+            </View>
+          </View>
+        )}
+
+        <ScrollView>
+          {data.users.map((user, index) => (
+            <ListItem
+              key={index}
+              leftAvatar={{
+                source: {
+                  uri: `https://i.pravatar.cc/50?img=${Math.floor(
+                    Math.random() * 10,
+                  )}`,
+                },
+              }}
+              title={user.firstName + user.lastName}
+              subtitle={user.email}
+              bottomDivider
+              onPress={() =>
+                navigation.navigate('QuizDetailStack', {
+                  quizId: index,
+                })
+              }
+              rightElement={
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                    }}>
+                    Score
+                  </Text>
+                  <Text>82/100</Text>
+                </View>
+              }
+            />
+          ))}
+          {data && data.users.length === 0 && (
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginTop: 10,
+                textAlign: 'center',
+                color: 'red',
+              }}>
+              There is not stundent participated in this class. Please put
+              some!!!
+            </Text>
+          )}
+        </ScrollView>
+      </>
     );
   }
 
@@ -180,23 +241,25 @@ const QuizDetail = ({navigation, route}) => {
             }}>
             {description}
           </Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#FF793F',
-              padding: 10,
-              borderRadius: 5,
-              marginTop: 10,
-            }}
-            onPress={() => navigation.navigate('ScoreRecapFormStack')}>
-            <Text
+          {data && data.users.length > 0 && (
+            <TouchableOpacity
               style={{
-                color: 'white',
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              Save to Student Raport
-            </Text>
-          </TouchableOpacity>
+                backgroundColor: '#FF793F',
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 10,
+              }}
+              onPress={() => navigation.navigate('ScoreRecapFormStack')}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
+                Save to Student Raport
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {content}

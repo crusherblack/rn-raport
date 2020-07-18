@@ -17,7 +17,13 @@ const GET_SUBJECT = gql`
   }
 `;
 
-const Subject = ({subjectModal, setFieldValue, value, name}) => {
+const Subject = ({
+  subjectModal,
+  setFieldValue,
+  value,
+  name,
+  setSubjectName,
+}) => {
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
 
@@ -55,6 +61,7 @@ const Subject = ({subjectModal, setFieldValue, value, name}) => {
               ) : null
             }
             onPress={() => {
+              setSubjectName(l.name);
               setFieldValue(name, l.id);
               subjectModal.current.close();
             }}

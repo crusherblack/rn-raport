@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -41,6 +41,10 @@ const FormSchema = yup.object({
 });
 
 const ScoreRecapForm = ({navigation}) => {
+  const [basicComName, setBasicComName] = useState(null);
+  const [subjectName, setSubjectName] = useState(null);
+  const [thematicName, setThematicName] = useState(null);
+
   const thematicModal = useRef();
   const subjectModal = useRef();
   const basicCompetenciesModal = useRef();
@@ -193,7 +197,7 @@ const ScoreRecapForm = ({navigation}) => {
                   style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
-                    value={values.thematic}
+                    value={values.thematic && thematicName}
                     editable={false}
                     placeholder="e.g. Berbagi Pekerjaan"
                   />
@@ -235,7 +239,7 @@ const ScoreRecapForm = ({navigation}) => {
                   <TextInput
                     style={styles.input}
                     editable={false}
-                    value={values.subject}
+                    value={values.subject && subjectName}
                     placeholder="e.g. Bahasa Indonesia"
                   />
                   <Icon2 name="caret-down" size={20} color="#747D8C" />
@@ -260,7 +264,7 @@ const ScoreRecapForm = ({navigation}) => {
                   <TextInput
                     style={styles.input}
                     editable={false}
-                    value={values.basicCompetencies}
+                    value={values.basicCompetencies && basicComName}
                     placeholder="e.g. BI KD 3.1"
                   />
                   <Icon2 name="caret-down" size={20} color="#747D8C" />
@@ -271,6 +275,7 @@ const ScoreRecapForm = ({navigation}) => {
                   name="thematic"
                   setFieldValue={setFieldValue}
                   value={values.thematic}
+                  setThematicName={setThematicName}
                 />
 
                 <SubjectModal
@@ -278,6 +283,7 @@ const ScoreRecapForm = ({navigation}) => {
                   name="subject"
                   setFieldValue={setFieldValue}
                   value={values.subject}
+                  setSubjectName={setSubjectName}
                 />
 
                 <BasicCompetenciesModal
@@ -285,6 +291,7 @@ const ScoreRecapForm = ({navigation}) => {
                   name="basicCompetencies"
                   setFieldValue={setFieldValue}
                   value={values.basicCompetencies}
+                  setBasicComName={setBasicComName}
                 />
               </View>
             </View>
