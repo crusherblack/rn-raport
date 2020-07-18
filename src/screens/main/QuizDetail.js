@@ -12,17 +12,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useQuery} from 'react-apollo';
 import {gql} from 'apollo-boost';
 
-const GET_USER_BY_CLASS = gql`
-  query quizzes($classId: String!) {
-    users(where: {classIdId: $classId}) {
+const GET_USER_QUIZ = gql`
+  query quizStudents($quizIdId: String!) {
+    quizStudents(where: {quizIdId: $quizIdId}) {
       id
-      firstName
-      lastName
-      email
-      classId {
-        id
-        name
+      studentId {
+        firstName
+        lastName
+        email
       }
+      score
     }
   }
 `;
@@ -37,9 +36,9 @@ const QuizDetail = ({navigation, route}) => {
     classId,
   } = route.params;
 
-  const {loading, error, data} = useQuery(GET_USER_BY_CLASS, {
+  const {loading, error, data} = useQuery(GET_USER_QUIZ, {
     variables: {
-      classId,
+      quizIdId: quizId,
     },
   });
 
@@ -53,43 +52,41 @@ const QuizDetail = ({navigation, route}) => {
   } else if (data) {
     content = (
       <>
-        {data.users.length > 0 && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
+              padding: 10,
+              borderBottomColor: '#FF793F',
+              borderBottomWidth: 3,
             }}>
-            <View
+            <Text
               style={{
-                padding: 10,
-                borderBottomColor: '#FF793F',
-                borderBottomWidth: 3,
+                color: '#FF793F',
+                fontWeight: 'bold',
               }}>
-              <Text
-                style={{
-                  color: '#FF793F',
-                  fontWeight: 'bold',
-                }}>
-                Submitted Quizzes ({data.users.length})
-              </Text>
-            </View>
-            <View
-              style={{
-                padding: 10,
-              }}>
-              <Text
-                style={{
-                  color: '#747D8C',
-                  fontWeight: 'bold',
-                }}>
-                Need to Submit (5)
-              </Text>
-            </View>
+              Submitted Quizzes ({data.quizStudents.length})
+            </Text>
           </View>
-        )}
+          <View
+            style={{
+              padding: 10,
+            }}>
+            <Text
+              style={{
+                color: '#747D8C',
+                fontWeight: 'bold',
+              }}>
+              Need to Submit (5)
+            </Text>
+          </View>
+        </View>
 
         <ScrollView>
-          {data.users.map((user, index) => (
+          {data.quizStudents.map((user, index) => (
             <ListItem
               key={index}
               leftAvatar={{
@@ -99,8 +96,8 @@ const QuizDetail = ({navigation, route}) => {
                   )}`,
                 },
               }}
-              title={user.firstName + user.lastName}
-              subtitle={user.email}
+              title={user.studentId.firstName + user.studentId.lastName}
+              subtitle={user.studentId.email}
               bottomDivider
               onPress={() =>
                 navigation.navigate('QuizDetailStack', {
@@ -120,7 +117,7 @@ const QuizDetail = ({navigation, route}) => {
               }
             />
           ))}
-          {data && data.users.length === 0 && (
+          {data && data.quizStudents.length === 0 && (
             <Text
               style={{
                 fontSize: 18,
@@ -241,25 +238,24 @@ const QuizDetail = ({navigation, route}) => {
             }}>
             {description}
           </Text>
-          {data && data.users.length > 0 && (
-            <TouchableOpacity
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#FF793F',
+              padding: 10,
+              borderRadius: 5,
+              marginTop: 10,
+            }}
+            onPress={() => navigation.navigate('ScoreRecapFormStack')}>
+            <Text
               style={{
-                backgroundColor: '#FF793F',
-                padding: 10,
-                borderRadius: 5,
-                marginTop: 10,
-              }}
-              onPress={() => navigation.navigate('ScoreRecapFormStack')}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                Save to Student Raport
-              </Text>
-            </TouchableOpacity>
-          )}
+                color: 'white',
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              Save to Student Raport
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {content}
