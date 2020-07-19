@@ -4,7 +4,6 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BasicConfirmModal from './BasicConfirm';
-
 import {ListItem, SearchBar} from 'react-native-elements';
 
 import {gql} from 'apollo-boost';

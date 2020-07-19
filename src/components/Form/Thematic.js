@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import SimpleList from '../List/SimpleList';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {gql} from 'apollo-boost';
-
 import {useQuery} from 'react-apollo';
 
 const GET_THEMATIC = gql`

@@ -5,7 +5,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 const BasicConfirm = ({
   basicCompetenciesModal,
   basicConfirmModal,
-  selectedList: {title, subtitle, id},
+  selectedList: {title, id},
   name,
   setFieldValue,
   setBasicComName,
