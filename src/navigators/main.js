@@ -19,24 +19,12 @@ const AuthStackNavigator = () => {
         headerShown: false,
       }}
       initialRouteName="Splash">
-      <MainStack.Screen
-        name={'MainMenuStack'}
-        component={MainMenu}></MainStack.Screen>
-      <MainStack.Screen
-        name={'QuizListStack'}
-        component={QuizList}></MainStack.Screen>
-      <MainStack.Screen
-        name={'RaportListStack'}
-        component={RaportList}></MainStack.Screen>
-      <MainStack.Screen
-        name={'QuizDetailStack'}
-        component={QuizDetail}></MainStack.Screen>
-      <MainStack.Screen
-        name={'ScoreRecapFormStack'}
-        component={ScoreRecap}></MainStack.Screen>
-      <MainStack.Screen
-        name={'RaportStack'}
-        component={Raport}></MainStack.Screen>
+      <MainStack.Screen name={'MainMenuStack'} component={MainMenu} />
+      <MainStack.Screen name={'QuizListStack'} component={QuizList} />
+      <MainStack.Screen name={'RaportListStack'} component={RaportList} />
+      <MainStack.Screen name={'QuizDetailStack'} component={QuizDetail} />
+      <MainStack.Screen name={'ScoreRecapFormStack'} component={ScoreRecap} />
+      <MainStack.Screen name={'RaportStack'} component={Raport} />
     </MainStack.Navigator>
   );
 };

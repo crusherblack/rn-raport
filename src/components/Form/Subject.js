@@ -9,8 +9,8 @@ import {gql} from 'apollo-boost';
 import {useQuery} from 'react-apollo';
 
 const GET_SUBJECT = gql`
-  query {
-    subjects {
+  query($name: String!) {
+    subjects(where: {name_contains: $name}) {
       id
       name
     }
@@ -27,7 +27,11 @@ const Subject = ({
   const [search, setSearch] = useState('');
   const [select, setSelect] = useState(null);
 
-  const {loading, error, data} = useQuery(GET_SUBJECT);
+  const {loading, error, data} = useQuery(GET_SUBJECT, {
+    variables: {
+      name: search,
+    },
+  });
 
   useEffect(() => {
     setSelect(value);

@@ -11,8 +11,8 @@ import {gql} from 'apollo-boost';
 import {useQuery} from 'react-apollo';
 
 const GET_BASIC_COMPETENCIES = gql`
-  query {
-    competences {
+  query($name: String!) {
+    competences(where: {name_contains: $name}) {
       id
       name
       description
@@ -32,7 +32,11 @@ const Subject = ({
   const [selectedList, setSelectedList] = useState({});
   const basicConfirmModal = useRef();
 
-  const {loading, error, data} = useQuery(GET_BASIC_COMPETENCIES);
+  const {loading, error, data} = useQuery(GET_BASIC_COMPETENCIES, {
+    variables: {
+      name: search,
+    },
+  });
 
   useEffect(() => {
     setSelect(value);

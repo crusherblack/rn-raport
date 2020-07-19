@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {gql} from 'apollo-boost';
-import {useMutation, useQuery, useLazyQuery} from 'react-apollo';
+import {useMutation, useLazyQuery} from 'react-apollo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Card from '../../components/Card/Card';
 
@@ -27,8 +27,10 @@ const GET_USER_DETAIL = gql`
   }
 `;
 
-const MainMenu = ({navigation}) => {
+const MainMenu = ({navigation, client}) => {
   const [storageUserId, setStorage] = useState();
+
+  const [setLoginFalse, {data}] = useMutation(SET_AUTH_LOGOUT);
 
   useEffect(() => {
     handleGetStorage();
@@ -47,6 +49,16 @@ const MainMenu = ({navigation}) => {
       variables: {id: storageUserId},
     },
   );
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      await setLoginFalse();
+      console.log('logout');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   let content;
   if (loading) {
@@ -78,19 +90,6 @@ const MainMenu = ({navigation}) => {
     );
   }
 
-  const [setLoginFalse, {data}] = useMutation(SET_AUTH_LOGOUT);
-
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('token');
-
-      setLoginFalse();
-      console.log('logout');
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <>
       <View style={{flex: 2, backgroundColor: 'black'}}>
@@ -108,11 +107,6 @@ const MainMenu = ({navigation}) => {
             navigation={navigation}
             to="RaportStack"
           />
-          {/* <TouchableOpacity
-            style={styles.containerBtn}
-            onPress={() => handleLogout()}>
-            <Text style={styles.textBtn}>Log Out</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </>

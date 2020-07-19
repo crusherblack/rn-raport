@@ -1,12 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -16,7 +9,7 @@ import {gql} from 'apollo-boost';
 import MainNavigator from './src/navigators/main';
 import LoginNavigator from './src/navigators/login';
 
-import {useMutation, useQuery, useLazyQuery} from '@apollo/react-hooks';
+import {useMutation, useLazyQuery} from 'react-apollo';
 
 const RootStack = createStackNavigator();
 
@@ -43,14 +36,8 @@ const App = () => {
     getToken();
   }, []);
 
-  const [setLoginTrue, {data: dataLogin}] = useMutation(SET_ISLOGIN);
-  const [setLogout, {data: dataLogout}] = useMutation(SET_LOGOUT);
-
-  /* const {
-    loading,
-    error,
-    data: {isLogin},
-  } = useQuery(GET_ISLOGIN); */
+  const [setLoginTrue] = useMutation(SET_ISLOGIN);
+  const [setLogout] = useMutation(SET_LOGOUT);
 
   const [getIsLogin, {loading, error, data}] = useLazyQuery(GET_ISLOGIN);
 
@@ -61,11 +48,9 @@ const App = () => {
 
     if (token) {
       setLoginTrue();
-      console.log('token ada');
     } else {
       setLogout();
     }
-
     getIsLogin();
   };
 
