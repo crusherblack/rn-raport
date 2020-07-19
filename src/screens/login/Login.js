@@ -11,7 +11,6 @@ import {gql} from 'apollo-boost';
 
 import {useMutation} from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
-import Modal from '../../components/Modal';
 
 import raportImage from '../../img/raport.png';
 
@@ -197,19 +196,21 @@ const Login = () => {
             </View>
           )}
         </Formik>
+        <View>
+          <Image
+            source={raportImage}
+            resizeMode="center"
+            style={{width: 300, height: 200, alignSelf: 'center'}}
+          />
+        </View>
       </View>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'white',
-        }}></View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     padding: 16,
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -231,6 +232,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     backgroundColor: '#FF793F',
+    marginBottom: 50,
   },
   textBtnLogin: {
     color: 'white',
