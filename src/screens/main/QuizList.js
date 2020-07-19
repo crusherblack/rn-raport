@@ -12,8 +12,8 @@ import dayjs from 'dayjs';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const GET_QUIZ = gql`
-  query {
-    quizzes {
+  query quizzes($name: String!) {
+    quizzes(where: {name_contains: $name}, orderBy: createdAt_DESC) {
       id
       name
       description
@@ -33,11 +33,13 @@ const QuizList = ({navigation}) => {
     {loading, error, data, refetch, networkStatus},
   ] = useLazyQuery(GET_QUIZ, {
     notifyOnNetworkStatusChange: true,
+    variables: {
+      name: search,
+    },
   });
 
   useEffect(() => {
     getQuiz();
-    console.log('run');
   }, []);
 
   let content;

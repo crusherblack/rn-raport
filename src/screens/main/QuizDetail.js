@@ -43,9 +43,9 @@ const QuizDetail = ({navigation, route}) => {
   } = route.params;
 
   const [getUserQuiz, {loading, error, data}] = useLazyQuery(GET_USER_QUIZ, {
-    onCompleted() {
+    /* onCompleted() {
       setUserQuiz();
-    },
+    }, */
     variables: {
       quizIdId: quizId,
     },
@@ -100,7 +100,7 @@ const QuizDetail = ({navigation, route}) => {
                 color: '#747D8C',
                 fontWeight: 'bold',
               }}>
-              Need to Submit (5)
+              Need to Submit (0)
             </Text>
           </View>
         </View>

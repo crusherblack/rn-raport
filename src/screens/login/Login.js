@@ -2,17 +2,18 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  Button,
+  Image,
   TouchableOpacity,
   TextInput,
   StyleSheet,
 } from 'react-native';
 import {gql} from 'apollo-boost';
 
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
-import OpenModelButton from '../../components/OpenModalButton';
 import Modal from '../../components/Modal';
+
+import raportImage from '../../img/raport.png';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
