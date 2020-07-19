@@ -57,15 +57,11 @@ const Raport = ({navigation}) => {
           : 'D',
         'Deksripsi Here Belum kelar mas',
       ]);
-      //console.log(convert);
 
       const filter = convert.map((nilai) => parseInt(nilai[2]));
-
       const total = filter.reduce((acc, curr) => acc + curr);
-
       const rataRata = (total / filter.length).toFixed(2);
 
-      console.log(rataRata);
       setTableDataRaports(convert);
       setRataRata(rataRata);
     },

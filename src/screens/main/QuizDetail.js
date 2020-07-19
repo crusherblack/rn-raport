@@ -43,9 +43,6 @@ const QuizDetail = ({navigation, route}) => {
   } = route.params;
 
   const [getUserQuiz, {loading, error, data}] = useLazyQuery(GET_USER_QUIZ, {
-    /* onCompleted() {
-      setUserQuiz();
-    }, */
     variables: {
       quizIdId: quizId,
     },
